@@ -1,0 +1,19 @@
+/* xxbdcut64x.baf
+Let Biff join after PC escaped from prison (if there is still a free slot in the group) */
+IF
+	Global("xxBiff_SoDEndMove","bd6200",1) //same variable as used in xxbd6200.baf to spawn Biff!
+	Global("bd_party_check","bd6200",5)
+	!Dead("xxBiff")  
+	!InParty("xxBiff") 
+	InMyArea("xxBiff") 
+	NumInPartyLT(6)
+THEN
+	RESPONSE #100
+		CutSceneId(Player1)
+		SetGlobal("xxBiff_SoDEndMove","bd6200",2)
+		ActionOverride("xxBiff",JoinParty())
+		SmallWait(10)
+		Continue()
+END
+
+

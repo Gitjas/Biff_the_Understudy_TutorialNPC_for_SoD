@@ -1,0 +1,11 @@
+/*xxbdcut61.baf: Biff leaves the group after the murder accusations */
+IF
+	InParty("xxBiff")  
+THEN
+	RESPONSE #100
+		CutSceneId("xxBiff")
+		ActionOverride("xxBiff",LeaveParty())
+		SetGlobal("xxBiff_SoDparty_epilogue","GLOBAL",1) //This will make Biff appear after the PC was released from prison.
+		SetGlobal("xxBiff_Kickout","GLOBAL",1) //this is for inner mod detection, for example if the game's a continuous EET game. Put here whatever you need for your own mod.
+		ActionOverride("xxBiff",DestroyAllFragileEquipment(ADAMANTINE)) //this destroys all drow equipment, just in case the NPC had any.
+END

@@ -1,0 +1,45 @@
+/* xxbd0101.baf
+1. It's a new soD game and the player didn't meet Biff yet because he didn't go into the city first but left directly for the crusade. */
+IF
+  Global("xxBiffSpawn","GLOBAL",0) //any variable that is true for a new game
+  Global("xxBiff_MoveCamp","bd0101",0) //so it happens only once
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","bd0101",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",1)
+    CreateCreature("xxBiff",[601.599],S)  //for Biff, these are same coordinates as in xxbd0010.baf since he was in front of the Palace before, too
+    ActionOverride("xxBiff",MakeGlobalOverride())
+    ChangeSpecifics("xxBiff",ALLIES)
+    ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD override script
+    ActionOverride("minsc",ChangeAIScript("",CLASS))
+    ActionOverride("minsc",ChangeAIScript("BDSHOUT",RACE))
+    ActionOverride("minsc",ChangeAIScript("BDFIGH01",GENERAL))  //Biff's a fighter so he gets a fighter script. Have a look at bdparty.bcs to see what other scripts are available for the different classes.
+    ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+END
+
+/* 2.+3: Biff was in party before and either PC already met him or not */
+IF
+  !Dead("xxBiff")
+  !InPartyAllowDead("xxBiff")
+  BeenInParty("xxBiff")
+  Global("xxBiff_MoveCamp","bd0101",0)  //so it happens only once
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","bd0101",1)
+    MoveGlobal("bd0101","xxBiff",[601.599])
+    ActionOverride("xxBiff",Face(S))    //or any other direction depending on the coordinates
+    ApplySpellRES("bdrejuve","xxBiff")  //completely heals and removes all spell effects
+    ChangeEnemyAlly("xxBiff",NEUTRAL)
+    ChangeSpecifics("xxBiff",ALLIES)
+    ActionOverride("xxBiff",SetGlobal("bd_joined","locals",0))  //this is needed for kickout and moving to camps -> see below
+    ActionOverride("xxBiff",SetGlobal("bd_retreat","locals",0)) //this variable is used to toggle behavior of crusaders in the class-dependent GENERAL scripts also used for NPCs. It needs to be "0" for NPCs.
+    ActionOverride("xxBiff",SaveObjectLocation("LOCALS","bd_default_loc",Myself))
+    ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD override script
+    ActionOverride("xxBiff",ChangeAIScript("",CLASS))
+    ActionOverride("xxBiff",ChangeAIScript("BDSHOUT",RACE))
+    ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL)) //Biff's a fighter so he gets a fighter script. Have a look at bdparty.bcs to see what other scripts are available for the different classes.
+    ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+END
+

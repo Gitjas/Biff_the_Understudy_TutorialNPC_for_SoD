@@ -1,0 +1,47 @@
+/* This goes into Biff's SoD script */
+
+/* First script block: Banter activation: detect Corwin and set a timer */
+IF
+	InParty(Myself) //"Myself" is Biff since we add this to his override script
+	InParty("CORWIN")  // Biff's banter partner's script name (death variable)
+	Global("xxSoD_CorwinBanter","LOCALS",0) //this variable is for activating and initiating this banter inside this script, only. Watch the letter count (max 27 for local variables if this didn't change for EE)
+THEN
+	RESPONSE #100
+		SetGlobalTimerRandom("xxBiff_SoD_CorwinBTimer","LOCALS",ONE_DAY,FOURTEEN_DAYS) //Adjust the min and max timer accordingly to what you want
+		SetGlobal("xxSoD_CorwinBanter","LOCALS",1)
+END
+
+
+/* Second script block: Banter deactivation in case Corwin or Biff is no longer in the party */
+IF
+	OR(2)
+		!InParty(Myself)
+		!InParty("CORWIN")  
+	Global("xxSoD_CorwinBanter","LOCALS",1)
+THEN
+	RESPONSE #100
+		SetGlobal("xxSoD_CorwinBanter","LOCALS",0)
+END
+
+/* Third script block: timer run out and banter is initiated by setting the area script to a custom script containing our banter. */
+IF
+	OR(2) //this is for debugging purposes, remove this line if you do not want to include this possibility 
+		Global("xxBiff_SoD_CorwinBanter_DEBUG","GLOBAL",1) //this is for debugging purposes, remove this line if you do not want to include this possibility 
+		GlobalTimerExpired("xxBiff_SoD_CorwinBTimer","LOCALS") //this needs to stay
+	OR(2) //this is for debugging purposes, remove this line if you do not want to include this possibility 
+		Global("xxBiff_SoD_CorwinBanter_DEBUG","GLOBAL",1) //this is for debugging purposes, remove this line if you do not want to include this possibility 
+		!GlobalTimerNotExpired("BD_NPC_BANTER","GLOBAL") //this needs to stay
+	GlobalTimerNotExpired("BD_AREA_BANTER_DELAY","MYAREA")
+	Global("xxSoD_CorwinBanter","LOCALS",1)
+	IsValidForPartyDialog(Myself) //"IsValidForPartyDialog" is working in a reliable fashion in the EE, but if you prefer you can use the wellknown "CD_STATE_NOTVALID" state check together with See() and InParty() instead.
+	IsValidForPartyDialog("CORWIN")  
+	!PartyRested()
+	!ActuallyInCombat()
+THEN
+	RESPONSE #100
+		BanterBlockTime(450) //From IESDP: "This action extends the time taken for the banter timer to expire. The banter timers are hardcoded and every time one expires an NPC's b****.dlg is called.". Adjust the time accordingly.
+		SetGlobalTimer("BD_NPC_BANTER","GLOBAL",FOUR_HOURS)
+		SetGlobal("xxSoD_CorwinBanter","LOCALS",2)
+//	    SetGlobal("xx_SoD_xxBiff01","MYAREA",1) //uncomment this line if you want to put all your banters into one single banter "area" script file. Setting the variable here needs to be reflected in xxBiff01.baf as stated in the comments. This is the same variable as it is used in xxBiff01.baf.
+		SetAreaScript("xxBiff01",GENERAL) //this is the banter "area" script containing the Biff-Corwin banter.
+END

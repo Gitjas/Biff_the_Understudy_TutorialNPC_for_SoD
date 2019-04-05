@@ -1,0 +1,11 @@
+/* xxbdintro.baf
+transition from BG:EE to SoD: change Biff's Joined dialogue and OVERRIDE script */
+IF
+	Global("SOD_fromimport","global",1)
+	InMyArea("xxBiff")  
+THEN
+	RESPONSE #100
+		CutSceneId(Player1)
+		ActionOverride("xxBiff",SetDialog("xxBiffJ")) //Biff's SoD joined dialogue
+		ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD script
+END

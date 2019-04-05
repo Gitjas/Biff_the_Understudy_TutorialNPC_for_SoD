@@ -1,0 +1,40 @@
+/* end of SoD. Biff will be at the meeting place */
+
+IF
+	Global("chapter","global",13)
+	Global("xxBiff_SoDEndMove","bd6200",0)
+	!Dead("xxBiff")  
+	!InPartyAllowDead("xxBiff")
+	Global("xxBiff_SoDparty_epilogue","GLOBAL",1) //this is the variable that was set in the xxbdcut61.baf
+THEN
+	RESPONSE #0
+		SetGlobal("xxBiff_SoDEndMove","bd6200",1)
+		MoveGlobal("bd6200","xxBiff",[1680.1135]) //chose coordinates near the meeting place: the clearing at the southeast. For example: Minsc is waiting at [1660.1120]
+		ActionOverride("xxBiff",SetSequence(SEQ_READY)) //from IESDP: This action instructs the active creature to perform the specified animation sequence. Values are from seq.ids.
+		ActionOverride("xxBiff",Face(NW)) //depending on where the NPC stands, they should face the north east
+		ActionOverride("xxBiff",SetGlobal("bd_joined","locals",0)) //we remember these from tutorial 1
+		ActionOverride("xxBiff",SetGlobal("bd_retreat","locals",0))
+		ActionOverride("xxBiff",SaveObjectLocation("LOCALS","bd_default_loc",Myself))
+		ReallyForceSpellDeadRES("bdrejuve","xxBiff")  // heals and removes spell effects
+		ChangeEnemyAlly("xxBiff",NEUTRAL)  
+		ChangeSpecifics("xxBiff",ALLIES)  
+		ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE))
+		ActionOverride("xxBiff",ChangeAIScript("",CLASS))
+		ActionOverride("xxBiff",ChangeAIScript("SHOUT",RACE))
+		ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL)) //Biff gets the fighter script. Have a look at bdparty.bcs to see what other scripts are available for the different classes.
+		ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+		ActionOverride("xxBiff",SetDialog("xxBiffsP")) //we need the dialogue because all present NPCs comment on the PC's escape
+		Continue()
+END
+
+/* Biff moves across area with the others */
+IF
+	Global("bd_plot","global",670)
+	Global("xxBiff_SodMovesbd6200","bd6200",0)
+	InMyArea("xxBiff")  
+THEN
+	RESPONSE #100
+		SetGlobal("xxBiff_SodMovesbd6200","bd6200",1)
+		ActionOverride("xxBiff",MoveToPoint([1410.1410])) //all NPCs move towards this point, no need for other coordinates
+		Continue()
+END

@@ -1,0 +1,174 @@
+/*
+
+Comments:
+(T1) - content of tutorial "Part 1: Automatic Transition of NPCs into SoD and between Camps in SoD"
+(T2) - content of tutorial "Part 2: Make Your NPC Comment and Move Along at the End of SoD"
+(T4) - content of tutorial "Part 4: SoD Banter System for Your NPC"
+
+
+*/
+
+BACKUP ~xxBiff/backup~ //put the mod folder name here, for the rest of the mod, you can use %MOD_FOLDER% (decreases the amount of copy&paste errors...)
+
+AUTHOR ~jastey@web.de~ //this is my eamil address. The info given here will be shown if the install fails with the note to send the DEBUG here for help. Put here wherever you want the player to seek your help in case the installation fails.
+
+VERSION ~1~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult
+
+README ~xxBiff/readme.Biff.%LANGUAGE%.txt~
+
+AUTO_TRA ~xxBiff/tra/%s~ /* This is where the installer looks for text strings, the "%s" is for the chosen language version. This mod doesn't have a tra folder yet, but you need one either if you are using symbols in the texts or if you have more than one language version. */
+/* please note: the tras are called in the order: 
+LANGUAGE, WITH_TRA, USING and AUTO_TRA
+with the last one overwriting the first, meaning: you can overwrite strings called by LANGUAGE with WITH_TRA, both will be overwritten by USING, but if there is a tra file of the same name of the file you are compiling in the AUTO_TRA folder, the strings with matching numbers from there will be taken with highest priority. */
+
+//ALWAYS //put stuff that should be done by every install of every component here. This mod doesn't have anything for this section, yet.
+
+//END
+
+LANGUAGE ~English~ ~english~ ~xxbiff/english/setup-xxbiff.tra~
+
+BEGIN ~Biff the Understudy: joinable "tutorial" NPC for SoD~ DESIGNATED 0 //giving the component a DESIGNATED number which will not change in the future is of great importance for crossmod compatibility. In this case, it would have been the "0th" component anyway, but especially for other components (if your mod has them), this would be important.
+
+REQUIRE_PREDICATE (GAME_IS ~bgee eet~ AND FILE_EXISTS_IN_GAME ~bd0103.are~) ~This mod is really only for SoD~
+
+/* Biff's cre file */
+/* this tutorial is not a good example for how to create your cre-file etc. I just took the exsiting Biff the Understudy (DIALOGMO.CRE) and adjusted his Allegiance, his script name (death variable), his override script and his greetings dialogue.  */
+
+COPY ~%MOD_FOLDER%/cre/xxbiff.cre~ ~override~
+//SAY NAME1 #11662 //we don't need this for Biff as his name is in the dialog.tlk already
+//SAY NAME2 #11662
+/* Biff doesn't have a sound set (yet)
+SAY INITIAL_MEETING ~~
+SAY MORALE ~~   
+SAY HAPPY ~~        
+SAY UNHAPPY_ANNOYED ~~   
+SAY UNHAPPY_SERIOUS ~~   
+SAY UNHAPPY_BREAKING ~~   
+SAY LEADER ~~   
+SAY TIRED ~~   
+SAY BORED ~~ 
+SAY BATTLE_CRY1 ~~  
+SAY BATTLE_CRY2 ~~   
+SAY BATTLE_CRY3 ~~   
+SAY BATTLE_CRY4~~   
+SAY DAMAGE ~~
+SAY DYING ~~
+SAY HURT ~~   
+SAY AREA_FOREST ~~   
+SAY AREA_CITY ~~  
+SAY AREA_DUNGEON ~~   
+SAY SELECT_COMMON1 ~~   
+SAY SELECT_COMMON2 ~~   
+SAY SELECT_COMMON3 ~~   
+SAY SELECT_COMMON4 ~~   
+SAY SELECT_COMMON5 ~~   
+SAY SELECT_COMMON6 ~~   
+SAY SELECT_ACTION1 ~~   
+SAY SELECT_ACTION2 ~~   
+SAY SELECT_ACTION3 ~~   
+SAY SELECT_ACTION4 ~~   
+SAY SELECT_ACTION5 ~~   
+SAY SELECT_ACTION6 ~~   
+SAY SELECT_ACTION7 ~~   
+SAY SELECT_RARE1 ~~   
+SAY SELECT_RARE2  ~~   
+SAY CRITICAL_HIT ~~   
+SAY CRITICAL_MISS ~~   
+SAY TARGET_IMMUNE ~~   
+SAY INVENTORY_FULL ~~ 
+SAY BIO ~~
+*/
+
+
+/* Biff's dialogues */
+
+/* (T1) SoD greeting dialogue */
+COMPILE EVALUATE_BUFFER ~%MOD_FOLDER%/dialogue/xxBiffs_greetingsdialogue.d~
+
+//actually, we do not really need EVALUATE_BUFFER as long as the file doesn't use any OUTER_SPRINT variables etc. but it doesn't hurt, either.
+
+/* (T1) SoD kickout dialogue */
+COMPILE EVALUATE_BUFFER ~%MOD_FOLDER%/dialogue/xxBiffsP_kickoutdialogue.d~
+
+/* (T2/(later also T3)) Biff's comments on SoD events */
+COMPILE EVALUATE_BUFFER ~%MOD_FOLDER%/dialogue/sod_event_comments.d~
+
+
+/* script compilation */
+
+// (T4) Biff's SoD script xxBiffs.baf 
+COMPILE ~%MOD_FOLDER%/baf/xxBiffs.baf~
+
+/* (T4) banter script with Corwin (and Minsc) */
+COMPILE ~%MOD_FOLDER%/baf/xxBiff01.baf~
+
+
+/* script compilation: modify existing scripts */
+
+/* (T1) transition from BG:EE to SoD: change Biff's Joined dialogue and OVERRIDE script */
+/* +++ Biff doesn't really need this since he won't be available before the transition to the city. This is for demonstration purposes if your NPC carries over from BG:EE +++ */
+EXTEND_TOP ~bdintro.bcs~ ~%MOD_FOLDER%/baf/xxbdintro.baf~
+  EVALUATE_BUFFER
+
+/* (T1) after Korlasz is defeated: PC is moved to Ducal Palace. Joined NPCs leave */
+/* +++ Biff doesn't really need this since he won't be available before the transition to the city. This is for demonstration purposes if your NPC carries over from BG:EE +++ */
+EXTEND_TOP ~bd0103.bcs~ ~%MOD_FOLDER%/baf/xxbd0103.baf~
+  EVALUATE_BUFFER 
+
+/* (T1) let Biff (re)appear in front of the Duchal Palace */
+EXTEND_BOTTOM ~bd0010.bcs~ ~%MOD_FOLDER%/baf/xxbd0010.baf~ EVALUATE_BUFFER
+
+/* (T1) Biff is in front of Ducal Palace if told to wait - or Player marches onto the battle without recruiting NPCs in Baldur' Gate: Biff will be in front of the palace, too */
+EXTEND_BOTTOM ~bd0101.bcs~ ~%MOD_FOLDER%/baf/xxbd0101.baf~
+  EVALUATE_BUFFER
+
+/* (T1) Biff moves to war camp in bd1000.are */
+EXTEND_BOTTOM ~bd1000.bcs~ ~%MOD_FOLDER%/baf/xxbd1000.baf~
+  EVALUATE_BUFFER
+
+/* (T1) and the same for the next camp in bd7100.are: */
+EXTEND_BOTTOM ~bd7100.bcs~ ~%MOD_FOLDER%/baf/xxbd7100.baf~
+  EVALUATE_BUFFER
+
+/* (T1) Last camp is in bd3000.are. In case Biff was never in party or kicked out to wait somewhere else, he will also be back in the (new) camp. */
+EXTEND_BOTTOM ~bd3000.bcs~ ~%MOD_FOLDER%/baf/xxbd3000.baf~
+  EVALUATE_BUFFER
+
+/* (T1) return to camp if kicked out */
+EXTEND_TOP ~bdparty.bcs~ ~%MOD_FOLDER%/baf/xxbdparty.baf~
+  EVALUATE_BUFFER
+
+/* (T1) Biff is kicked in hell dimension - teleport to last hell area bd4400.are */
+EXTEND_TOP ~bdcut58.bcs~ ~%MOD_FOLDER%/baf/xxbdcut59b.baf~
+  EVALUATE_BUFFER
+
+/* (T1) Biff is kicked in hell dimension or was waiting elsewhere- teleport to Dragonspear Castle interior (bd4300.are) after PC returns from Avernus */
+EXTEND_TOP ~bdcut59b.bcs~ ~%MOD_FOLDER%/baf/xxbdcut59b.baf~
+  EVALUATE_BUFFER
+
+/* (T2) Biff comments on murder accusation */
+EXTEND_TOP ~bd4100.bcs~ ~%MOD_FOLDER%/baf/xxbd4100.baf~
+  EVALUATE_BUFFER
+
+/* (T2) after PC gets arrested for murder: Biff leaves party */
+EXTEND_TOP ~bdcut61.bcs~ ~%MOD_FOLDER%/baf/xxbdcut61.baf~
+  EVALUATE_BUFFER
+
+/* (T2) Biff waits in front of the prison exit */
+EXTEND_TOP ~bd6200.bcs~ ~%MOD_FOLDER%/baf/xxbd6200.baf~
+  EVALUATE_BUFFER
+
+/* (T2) Let Biff join after PC escaped from prison (if there is still a free slot in the group) */
+EXTEND_TOP ~bdcut64x.bcs~ ~%MOD_FOLDER%/baf/xxbdcut64x.baf~
+  EVALUATE_BUFFER
+
+
+
+/* bddialog.2da patching */
+/* by patching the bddialog.2da the engine knows which dialogues to call in SoD for Biff for joined and kickout dialogue and the dream script (triggers upon resting) */
+
+/* add Biff's dialogues and dream script to bddialog.2da */
+APPEND ~bddialog.2da~
+~xxBiff xxBiffsP xxBiffJ xxBiffD~ //first entry if Biff's death variable
+UNLESS ~xxBiff~
+

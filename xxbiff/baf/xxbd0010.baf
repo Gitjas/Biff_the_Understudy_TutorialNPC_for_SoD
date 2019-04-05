@@ -1,0 +1,47 @@
+/* xxbd0010.baf
+
+Biff will be waiting in front of the Ducal Palace */
+/* new SoD game */
+IF
+  Global("xxBiffSpawn","GLOBAL",0) //any variable that is true for a new game
+  Global("xxBiff_MoveCamp","bd0010",0) //so it happens only once
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","bd0010",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",1)
+    CreateCreature("xxBiff",[601.599],S)  //open area in NI and chose coordinates and face direction. I put Biff right behind Ryphus.
+    ActionOverride("xxBiff",MakeGlobalOverride())
+    ChangeSpecifics("xxBiff",ALLIES)
+    ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD override script
+    ActionOverride("minsc",ChangeAIScript("",CLASS))
+    ActionOverride("minsc",ChangeAIScript("",RACE))
+    ActionOverride("minsc",ChangeAIScript("",GENERAL))
+    ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+END
+
+/* 2nd script block if Biff was in party before */
+IF
+  !Dead("xxBiff")
+  !InPartyAllowDead("xxBiff")
+  BeenInParty("xxBiff") //this variable is set automatically if Biff was in Party in BG1 or SoD
+  Global("xxBiff_MoveCamp","bd0010",0)  //so it happens only once
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","bd0010",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",1) //we set this so he will be moved to bd0101.are, not spawned anew
+    MoveGlobal("bd0010","xxBiff",[601.599])
+    ActionOverride("xxBiff",Face(S))    //or any other direction depending on the coordinates
+    ApplySpellRES("bdrejuve","xxBiff")  //completely heals and removes all spell effects
+    ChangeEnemyAlly("xxBiff",NEUTRAL)
+    ChangeSpecifics("xxBiff",ALLIES)
+    ActionOverride("xxBiff",SetGlobal("bd_joined","locals",0))  //this is needed for kickout and moving to camps -> see below
+    ActionOverride("xxBiff",SetGlobal("bd_retreat","locals",0)) //this variable is used to toggle behavior of crusaders in the class-dependent GENERAL scripts also used for NPCs. It needs to be "0" for NPCs.
+    ActionOverride("xxBiff",SaveObjectLocation("LOCALS","bd_default_loc",Myself)) // used e.g. in bdshout.bcs which is set to RACE script by bdparty.bcs which uses MoveToSavedLocationn("bd_default_loc","LOCALS")
+    ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD override script
+    ActionOverride("xxBiff",ChangeAIScript("DEFAULT",CLASS))
+    ActionOverride("xxBiff",ChangeAIScript("",RACE))
+    ActionOverride("xxBiff",ChangeAIScript("",GENERAL))
+    ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+END
