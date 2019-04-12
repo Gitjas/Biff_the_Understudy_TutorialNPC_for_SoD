@@ -13,9 +13,9 @@ THEN
     ActionOverride("xxBiff",MakeGlobalOverride())
     ChangeSpecifics("xxBiff",ALLIES)
     ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD override script
-    ActionOverride("minsc",ChangeAIScript("",CLASS))
-    ActionOverride("minsc",ChangeAIScript("",RACE))
-    ActionOverride("minsc",ChangeAIScript("",GENERAL))
+    ActionOverride("xxBiff",ChangeAIScript("",CLASS))
+    ActionOverride("xxBiff",ChangeAIScript("",RACE))
+    ActionOverride("xxBiff",ChangeAIScript("",GENERAL))
     ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
     ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
 END

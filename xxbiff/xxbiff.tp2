@@ -12,18 +12,31 @@ BACKUP ~xxBiff/backup~ //put the mod folder name here, for the rest of the mod, 
 
 AUTHOR ~jastey@web.de~ //this is my eamil address. The info given here will be shown if the install fails with the note to send the DEBUG here for help. Put here wherever you want the player to seek your help in case the installation fails.
 
-VERSION ~1~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult
+VERSION ~2~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult
 
 README ~xxBiff/readme.Biff.%LANGUAGE%.txt~
 
-AUTO_TRA ~xxBiff/tra/%s~ /* This is where the installer looks for text strings, the "%s" is for the chosen language version. This mod doesn't have a tra folder yet, but you need one either if you are using symbols in the texts or if you have more than one language version. */
+AUTO_TRA ~xxBiff/tra/%s~ /* This is where the installer looks for text strings, the "%s" is for the chosen language version. Please note: text files inside the tra need to be in ANSI format. */
 /* please note: the tras are called in the order: 
 LANGUAGE, WITH_TRA, USING and AUTO_TRA
 with the last one overwriting the first, meaning: you can overwrite strings called by LANGUAGE with WITH_TRA, both will be overwritten by USING, but if there is a tra file of the same name of the file you are compiling in the AUTO_TRA folder, the strings with matching numbers from there will be taken with highest priority. */
 
-//ALWAYS //put stuff that should be done by every install of every component here. This mod doesn't have anything for this section, yet.
+ALWAYS //put stuff that should be done by every install of every component here. 
 
-//END
+  ACTION_DEFINE_ARRAY traxxreload BEGIN setup END //setup.tra contains ingame strings so it needs to be reloaded after the utf-8 conversion
+//  ACTION_DEFINE_ARRAY traxxnoconvert BEGIN END //if you have a tra file that doesn't need to be reloaded (e.g. a pure setup.tra for the install process only) or that is already in utf-8 format and shouldn't be included for conversion, you could specify it here
+
+  LAF HANDLE_CHARSETS
+	INT_VAR
+		infer_charsets = 1 //choses the correct encoding for different languages
+	STR_VAR
+		tra_path = EVAL ~%MOD_FOLDER%/tra~ //path to the LANGUAGE folders
+//		noconvert_array = traxxnoconvert //if you specified the array above
+		reload_array = traxxreload //loads the array defined above
+		iconv_path = EVAL ~%MOD_FOLDER%/tra/iconv~ //path to the inconv folder
+  END
+
+END
 
 LANGUAGE ~English~ ~english~ ~xxbiff/english/setup-xxbiff.tra~
 
@@ -154,6 +167,10 @@ EXTEND_TOP ~bd4100.bcs~ ~%MOD_FOLDER%/baf/xxbd4100.baf~
 EXTEND_TOP ~bdcut61.bcs~ ~%MOD_FOLDER%/baf/xxbdcut61.baf~
   EVALUATE_BUFFER
 
+/* (T2) Biff visits PC in Prison */
+EXTEND_TOP ~bd0104.bcs~ ~%MOD_FOLDER%/baf/xxbd0104.baf~
+  EVALUATE_BUFFER
+
 /* (T2) Biff waits in front of the prison exit */
 EXTEND_TOP ~bd6200.bcs~ ~%MOD_FOLDER%/baf/xxbd6200.baf~
   EVALUATE_BUFFER
@@ -171,4 +188,29 @@ EXTEND_TOP ~bdcut64x.bcs~ ~%MOD_FOLDER%/baf/xxbdcut64x.baf~
 APPEND ~bddialog.2da~
 ~xxBiff xxBiffsP xxBiffJ xxBiffD~ //first entry if Biff's death variable
 UNLESS ~xxBiff~
+
+/* (T1) EET compatibility: Biff is an BG1 (SoD) NPC only. His name will be mentioned on EET's fate spirit in ToB, but he will not be summonable. */
+
+ACTION_IF GAME_IS ~eet~ BEGIN
+  INCLUDE ~EET/other/EET_functions.tph~
+  LAF ~EET_NPC_TRANSITION~ 
+    INT_VAR
+      type = 1 //Biff is only available in BG:EE/SoD
+    STR_VAR
+      dv = "xxBiff" 
+      override_BG1 = "" /* OVERRIDE script in BG:EE. Put your NPC's BG:EE script here UNLESS you use the same script for BG:EE and SoD 
+(adds a "destruct in Chapter greater than 7" scriptblock, for example if your NPC was spawned in BG:EE but was never in party (although "BeenInParty" is not being checked by this scriptblock)). 
+If your NPC is SoD only like Biff, leave this open. */
+      override_SoD = "xxBiffs" //OVERRIDE script in SoD. This will add a "Selfdestruct" in Chapter greater than 13 to the SoD script.
+      traFile = "%MOD_FOLDER%/tra/%LANGUAGE%/dialog.tra" //path to the text line for the ToB Fate Spirit summoning
+      string = "@0" /* ~Bring me Biff the Understudy.~ */
+      stringPosDV = "Baeloth" //Name after which Biff's should be put into the order of reply options at the fate spirit summoning dialogue. 
+/* From the "Modder's Notes for Baldur's Gate: Enhanced Edition Trilogy (EET)":
+    stringPosDV = "" //set the DV of NPC right below your response (used for sorting FATESP responses alphabetically)
+      //Aerie, Ajantis, Alora, Anomen, Baeloth, Branwen, Cernd, Coran, Corwin, Dorn, Dynaheir, Edwin, Eldoth, Faldorn, Garrick,
+      //Glint, HaerDalis, Hexxat, Imoen2, Jaheira, Jan, Kagain, Keldorn, Khalid, Kivan, Korgan, MKhiin, Mazzy, Minsc, Montaron,
+      //Nalia, Neera, Quayle, Rasaad, Safana, SharTeel, Skie, Tiax, Valygar, Viconia, Voghiln, Wilson, Xan, Xzar, Yeslick, Yoshimo
+      //variable not set (default) = NPC name appended at the end of summoning list */
+  END
+END
 

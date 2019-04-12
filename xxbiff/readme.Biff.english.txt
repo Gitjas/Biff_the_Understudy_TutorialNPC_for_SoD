@@ -1,6 +1,6 @@
 			Biff the Understudy - Tutorial NPC for SoD 
 					by jastey 
-					Version 1
+					Version 2
 
 
 This mod is meant as a tutorial for modders how to script the basic structure needed for an SoD NPC.
@@ -91,6 +91,9 @@ WeiDU					http://www.weidu.org
 
 Modding communities, tutorials and technical assistance:
 
+Modder's Notes for Baldur's Gate: Enhanced Edition Trilogy (EET):
+https://cdn.rawgit.com/K4thos/EET/master/EET/docs/Modder's Notes.html
+
 The Gibberlings Three			https://www.gibberlings3.net/
 Pocket Plane Group			http://pocketplane.net
 Spellhold Studios			http://www.shsforums.net/
@@ -107,6 +110,14 @@ This mod is not developed, supported, or endorsed by BioWare, Black Isle Studios
 
 
 HISTORY
+
+Version 2
+-added EET compatibility 
+-corrected copy&paste errors where Minsc's death variable was inside scripts instead of Biff's
+-corrected trigger of second script block in xxbd0101.baf to close the oversight that Biff wouldn't (re)spawn here in case he was already spawned in bd0010.are but not taken into the group
+-added "Biff visits PC in prison"
+-added "Corwin will mention Biff's whereabouts in BG city if asked about the former companions"
+-the mod now uses a tra file (albeit only for the line needed for EET fate spirit) and HANDLE_CHARSETS for text conversion
 
 Version 1
 
