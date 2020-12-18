@@ -4,10 +4,10 @@ Biff will be waiting in front of the Ducal Palace */
 /* new SoD game */
 IF
   Global("xxBiffSpawn","GLOBAL",0) //any variable that is true for a new game
-  Global("xxBiff_MoveCamp","bd0010",0) //so it happens only once
+  Global("xxBiff_MoveCamp","MYAREA",0) //so it happens only once
 THEN
   RESPONSE #100
-    SetGlobal("xxBiff_MoveCamp","bd0010",1)
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
     SetGlobal("xxBiffSpawn","GLOBAL",1)
     CreateCreature("xxBiff",[601.599],S)  //open area in NI and chose coordinates and face direction. I put Biff right behind Ryphus.
     ActionOverride("xxBiff",MakeGlobalOverride())
@@ -25,10 +25,10 @@ IF
   !Dead("xxBiff")
   !InPartyAllowDead("xxBiff")
   BeenInParty("xxBiff") //this variable is set automatically if Biff was in Party in BG1 or SoD
-  Global("xxBiff_MoveCamp","bd0010",0)  //so it happens only once
+  Global("xxBiff_MoveCamp","MYAREA",0)  //so it happens only once
 THEN
   RESPONSE #100
-    SetGlobal("xxBiff_MoveCamp","bd0010",1)
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
     SetGlobal("xxBiffSpawn","GLOBAL",1) //we set this so he will be moved to bd0101.are, not spawned anew
     MoveGlobal("bd0010","xxBiff",[601.599])
     ActionOverride("xxBiff",Face(S))    //or any other direction depending on the coordinates

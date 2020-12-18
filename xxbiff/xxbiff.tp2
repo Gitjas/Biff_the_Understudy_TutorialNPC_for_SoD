@@ -12,7 +12,7 @@ BACKUP ~xxBiff/backup~ //put the mod folder name here, for the rest of the mod, 
 
 AUTHOR ~jastey@web.de~ //this is my eamil address. The info given here will be shown if the install fails with the note to send the DEBUG here for help. Put here wherever you want the player to seek your help in case the installation fails.
 
-VERSION ~2~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult
+VERSION ~3~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult
 
 README ~xxBiff/readme.Biff.%LANGUAGE%.txt~
 
@@ -22,6 +22,10 @@ LANGUAGE, WITH_TRA, USING and AUTO_TRA
 with the last one overwriting the first, meaning: you can overwrite strings called by LANGUAGE with WITH_TRA, both will be overwritten by USING, but if there is a tra file of the same name of the file you are compiling in the AUTO_TRA folder, the strings with matching numbers from there will be taken with highest priority. */
 
 ALWAYS //put stuff that should be done by every install of every component here. 
+
+  /* needed for exact match in REPLACE_TEXTUALLY */
+  INCLUDE ~%MOD_FOLDER%/lib/extra_regexp_vars.tph~
+  OUTER_SPRINT newline ~%WNL%%LNL%%MNL%%TAB% ~
 
   ACTION_DEFINE_ARRAY traxxreload BEGIN setup END //setup.tra contains ingame strings so it needs to be reloaded after the utf-8 conversion
 //  ACTION_DEFINE_ARRAY traxxnoconvert BEGIN END //if you have a tra file that doesn't need to be reloaded (e.g. a pure setup.tra for the install process only) or that is already in utf-8 format and shouldn't be included for conversion, you could specify it here

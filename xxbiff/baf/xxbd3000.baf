@@ -1,14 +1,41 @@
 /* xxbd3000.baf
 Moves Biff into the Coalition Camp if he was not in party */
 
+/* 1. It's a new soD game, or Biff wasn't spawned yet in SoD because the player uses a mod that lets skip bd0101.are (the marching out of the coalition in front of the Palace). */
 IF
-  Global("xxBiff_MoveCamp","bd3000",0)
   !Dead("xxBiff")
   !InPartyAllowDead("xxBiff")
+  Global("xxBiffSpawn","GLOBAL",0) //true for a new SoD game
+  Global("xxBiff_MoveCamp","MYAREA",0) //so it happens only once
 THEN
   RESPONSE #100
-    SetGlobal("xxBiff_MoveCamp","bd3000",1)
-    MoveGlobal("bd3000","xxBiff",[1552.1723]) //look up area coordinates for bd3000.are
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",5) //again, one higher than in xxbd7100.baf
+    CreateCreature("xxBiff",[1552.1723],N)  //look up area coordinates for bd3000.are
+    ActionOverride("xxBiff",MakeGlobalOverride())
+    ChangeSpecifics("xxBiff",ALLIES)
+    ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE)) //Biff's SoD override script
+    ActionOverride("xxBiff",ChangeAIScript("bdasc3",CLASS))
+    ActionOverride("xxBiff",ChangeAIScript("BDSHOUT",RACE))
+    ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL))  //Biff's a fighter so he gets a fighter script. Have a look at bdparty.bcs to see what other scripts are available for the different classes.
+    ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+END
+
+//2. Move him if he was already spawned before or exists from BG1
+IF
+  Global("xxBiff_MoveCamp","MYAREA",0)
+  !Dead("xxBiff")
+  !InPartyAllowDead("xxBiff")
+  OR(2)
+	BeenInParty("xxBiff") //this is true if Biff was in party before
+	GlobalGT("xxBiffSpawn","GLOBAL",0)//this is true if he was already spawned before
+  GlobalLT("xxBiffSpawn","GLOBAL",5)
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",5)
+    MoveGlobal("bd3000","xxBiff",[1552.1723]) //same area coordinates as above
     ActionOverride("xxBiff",Face(N))
     ReallyForceSpellDeadRES("bdrejuve","xxBiff")
     ChangeEnemyAlly("xxBiff",NEUTRAL)
@@ -21,6 +48,6 @@ THEN
     ActionOverride("xxBiff",ChangeAIScript("BDSHOUT",RACE))
     ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL))
     ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
-    ActionOverride("xxBiff",SetDialogue("xxBiffsP"))
+    ActionOverride("xxBiff",SetDialogue("xxBiffsP")) //kickout dialogue: assuming the PC already talked to Biff
     Continue()
 END

@@ -1,6 +1,6 @@
 			Biff the Understudy - Tutorial NPC for SoD 
 					by jastey 
-					Version 2
+					Version 3
 
 
 This mod is meant as a tutorial for modders how to script the basic structure needed for an SoD NPC.
@@ -110,6 +110,12 @@ This mod is not developed, supported, or endorsed by BioWare, Black Isle Studios
 
 
 HISTORY
+
+Version 3
+-corrected script so Biff will not spawn double in front of Palace (in xxbd0101.baf).
+-changed variable from "bdxxxx" to "MYAREA" to make using the script templates easier (in xxbd0010.baf, xxbd0101.baf, xxbd1000.baf, xxbd3000.baf, xxbd7100.baf).
+-Added compatibility with mods that lets skip parts of SoD (xxbd1000.baf, xxbd3000.baf, xxbd7100.baf).
+
 
 Version 2
 -added EET compatibility 

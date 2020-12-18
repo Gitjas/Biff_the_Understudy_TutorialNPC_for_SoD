@@ -4,11 +4,11 @@ IF
   !Dead("xxBiff")
   !InPartyAllowDead("xxBiff")
   Global("xxBiffSpawn","GLOBAL",0) //true for a new SoD game
-  Global("xxBiff_MoveCamp","bd0101",0) //so it happens only once
+  Global("xxBiff_MoveCamp","MYAREA",0) //so it happens only once
 THEN
   RESPONSE #100
-    SetGlobal("xxBiff_MoveCamp","bd0101",1)
-    SetGlobal("xxBiffSpawn","GLOBAL",1)
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",2)
     CreateCreature("xxBiff",[601.599],S)  //for Biff, these are same coordinates as in xxbd0010.baf since he was in front of the Palace before, too
     ActionOverride("xxBiff",MakeGlobalOverride())
     ChangeSpecifics("xxBiff",ALLIES)
@@ -27,10 +27,11 @@ IF
   OR(2)
 	BeenInParty("xxBiff") //this is true if Biff was in party before
 	Global("xxBiffSpawn","GLOBAL",1) //this is true if he was already spawned in bd0010.are
-  Global("xxBiff_MoveCamp","bd0101",0)  //so it happens only once
+  Global("xxBiff_MoveCamp","MYAREA",0)  //so it happens only once
 THEN
   RESPONSE #100
-    SetGlobal("xxBiff_MoveCamp","bd0101",1)
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
+    SetGlobal("xxBiffSpawn","GLOBAL",2)
     MoveGlobal("bd0101","xxBiff",[601.599])
     ActionOverride("xxBiff",Face(S))    //or any other direction depending on the coordinates
     ApplySpellRES("bdrejuve","xxBiff")  //completely heals and removes all spell effects
