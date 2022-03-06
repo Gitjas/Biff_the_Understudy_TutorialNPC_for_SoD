@@ -1,6 +1,6 @@
 			Biff the Understudy - Tutorial NPC for SoD 
 					by jastey 
-					Version 3
+					Version 4
 
 
 This mod is meant as a tutorial for modders how to script the basic structure needed for an SoD NPC.
@@ -10,21 +10,21 @@ The "xxbiff.ini" file is for ALIEN's Project Infinity automated installer:
 https://forums.beamdog.com/discussion/74335/project-infinity-public-beta/p1
 
 The contents of this mod is based on my SoD Modding Tutorials:
-Modding Tutorial Part 1: Automatic Transition of NPCs into SoD and between Camps in SoD:
+Modding Tutorial Part 1: Automatic Transition of NPCs into SoD and between Camps in SoD, version 8:
 https://gibberlings3.github.io/modding-resources/Tutorial_NPCMoveCampsSoD.html
 
-Modding Tutorial Part 2: Make Your NPC Comment and Move Along at the End of SoD:
+Modding Tutorial Part 2: Make Your NPC Comment and Move Along at the End of SoD, version 5:
 https://gibberlings3.github.io/modding-resources/Tutorial_NPC_SoDGameEnd.html
 
-Modding Tutorial Part 4: How to Script the SoD Banter System for Your NPC:
+Modding Tutorial Part 4: How to Script the SoD Banter System for Your NPC, version 2:
 https://gibberlings3.github.io/modding-resources/Tutorial_SoDBanterSystem.html
 
-
+The mod is not fully traify-ed yet, meaning that all texts for Biff's actual ingame dialogues and comments via scripts are still inside the d- and baf-files, which so far make translations impossible. For tutorial on how to work with d/tra pairs please refer to Kulyok's NPC Tutorial 1-day mod NPC "Branwen" at Poscket Plane Group: https://www.pocketplane.net/one-day-npcs/
 
 INSTALLATION
 
-Really? 
-OK, if you read this for info, this is what I usually put into my readmes concerning installation:
+This mod is not meant to be played. It's a serious tutorial mod package, but Biff's dialogues are meant tongue-in-cheek and are rather 4th wall breaking. If you read this for info, this is what I usually put into my readmes concerning installation.
+Biff would be honored, though.
 
 SoD:
 If you use SoD from GOG or Steam, you need to prepare your game with either modmerge before installing any mods:
@@ -110,6 +110,13 @@ This mod is not developed, supported, or endorsed by BioWare, Black Isle Studios
 
 
 HISTORY
+
+Version 4
+-Updated the mod to the Tutorial updates: Tutorial 1 v8, Tutorial 2 v5.
+-Added example of German language choice (not active) and traify-ed all lines in the tp2.
+-Changed handling of texts: setup-xxbiff.tra contains lines needed for setup, all ingame text from tp2 moved into game-xxbiff.tra.
+-Added dynamic order syntax and globally unique labels to xxbiff.ini and tp2 to include support for Project Infinity.
+-Updated Readme.
 
 Version 3
 -corrected script so Biff will not spawn double in front of Palace (in xxbd0101.baf).

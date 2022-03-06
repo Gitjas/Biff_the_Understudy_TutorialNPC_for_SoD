@@ -10,24 +10,25 @@ Comments:
 
 BACKUP ~xxBiff/backup~ //put the mod folder name here, for the rest of the mod, you can use %MOD_FOLDER% (decreases the amount of copy&paste errors...)
 
-AUTHOR ~jastey@web.de~ //this is my eamil address. The info given here will be shown if the install fails with the note to send the DEBUG here for help. Put here wherever you want the player to seek your help in case the installation fails.
+AUTHOR ~https://www.gibberlings3.net/forums/topic/30139-jasteys-sod-npc-modding-tutorials/~ //The info given here will be shown if the install fails with the note to send the DEBUG here for helfile p. Put here wherever you want the player to seek your help in case the installation fails. I used to give my email address but switched to giving a forum link as it has several advantages.
 
-VERSION ~3~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult
+VERSION ~4~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
 
-README ~xxBiff/readme.Biff.%LANGUAGE%.txt~
+README ~xxBiff/readme.Biff.%LANGUAGE%.txt~ //The file specified here will be called after the language call, but before the installation of the mod. Can also be html.
 
-AUTO_TRA ~xxBiff/tra/%s~ /* This is where the installer looks for text strings, the "%s" is for the chosen language version. Please note: text files inside the tra need to be in ANSI format. */
+AUTO_TRA ~xxBiff/tra/%s~ /* This is where the installer looks for text strings, the "%s" is for the chosen language version. 
+Please note: text files for the EE need to be in utf8 without BOM. However, in this tutorial mod the tra files are in ANSI. This is because so far, the usual way of handling tra files in mod installation was direct conversion from ANSI to utf8 using HANDLE_CHARSETS with iconv.exe. This is the way how it is done here. */
 /* please note: the tras are called in the order: 
 LANGUAGE, WITH_TRA, USING and AUTO_TRA
 with the last one overwriting the first, meaning: you can overwrite strings called by LANGUAGE with WITH_TRA, both will be overwritten by USING, but if there is a tra file of the same name of the file you are compiling in the AUTO_TRA folder, the strings with matching numbers from there will be taken with highest priority. */
 
 ALWAYS //put stuff that should be done by every install of every component here. 
 
-  /* needed for exact match in REPLACE_TEXTUALLY */
+/* this is needed if ingame text ressources need to be patched e.g. inside a script so the text matches 100%: needed for exact match in REPLACE_TEXTUALLY */
   INCLUDE ~%MOD_FOLDER%/lib/extra_regexp_vars.tph~
   OUTER_SPRINT newline ~%WNL%%LNL%%MNL%%TAB% ~
 
-  ACTION_DEFINE_ARRAY traxxreload BEGIN setup END //setup.tra contains ingame strings so it needs to be reloaded after the utf-8 conversion
+  ACTION_DEFINE_ARRAY traxxreload BEGIN game-xxbiff END //game.tra contains ingame strings so it needs to be reloaded after the utf-8 conversion
 //  ACTION_DEFINE_ARRAY traxxnoconvert BEGIN END //if you have a tra file that doesn't need to be reloaded (e.g. a pure setup.tra for the install process only) or that is already in utf-8 format and shouldn't be included for conversion, you could specify it here
 
   LAF HANDLE_CHARSETS
@@ -42,11 +43,21 @@ ALWAYS //put stuff that should be done by every install of every component here.
 
 END
 
-LANGUAGE ~English~ ~english~ ~xxbiff/english/setup-xxbiff.tra~
+/* language choices the player gets to chose from upon install. The tra files needed for the tp2 need to be read in here. Note: any ingame texts need to be reloaded after the conversion to utf8 as it is done above. */
+LANGUAGE ~English~ ~english~ ~xxbiff/tra/english/setup-xxbiff.tra~ ~xxbiff/tra/english/game-xxbiff.tra~
 
-BEGIN ~Biff the Understudy: joinable "tutorial" NPC for SoD~ DESIGNATED 0 //giving the component a DESIGNATED number which will not change in the future is of great importance for crossmod compatibility. In this case, it would have been the "0th" component anyway, but especially for other components (if your mod has them), this would be important.
+/* commented out as it's just an example. Ingame texts are not translated.
+LANGUAGE ~German~ ~german~ ~xxbiff/tra/german/setup-xxbiff.tra~ 
+~xxbiff/tra/german/game-xxbiff.tra~
+*/
 
-REQUIRE_PREDICATE (GAME_IS ~bgee eet~ AND FILE_EXISTS_IN_GAME ~bd0103.are~) ~This mod is really only for SoD~
+BEGIN @90000 /* ~Biff the Understudy: joinable "tutorial" NPC for SoD~ */ DESIGNATED 0 
+/* giving the component a DESIGNATED number which will not change in the future is of great importance for crossmod compatibility. In this case, it would have been the "0th" component anyway, but especially for other components (if your mod has them), this would be important. */
+LABEL xxbiff_sod_tutorial_mod-main /* define a unique global label for this mod component(!). It basically does what DESIGNATED does, only better. And it helps Project Infinity remember the component when setting up an install list. */
+
+/* make sure the mod cannot be installed to a wrong game, like BGII etc. */
+/* Biff can only be installed to BG:SoD and EET. */
+REQUIRE_PREDICATE (GAME_IS ~bgee eet~ AND FILE_EXISTS_IN_GAME ~bd0103.are~) @90001 /* ~This mod is really only for SoD~ */
 
 /* Biff's cre file */
 /* this tutorial is not a good example for how to create your cre-file etc. I just took the exsiting Biff the Understudy (DIALOGMO.CRE) and adjusted his Allegiance, his script name (death variable), his override script and his greetings dialogue.  */
@@ -179,9 +190,42 @@ EXTEND_TOP ~bd0104.bcs~ ~%MOD_FOLDER%/baf/xxbd0104.baf~
 EXTEND_TOP ~bd6200.bcs~ ~%MOD_FOLDER%/baf/xxbd6200.baf~
   EVALUATE_BUFFER
 
+/* [DEPRECATED] - refer to Tutorial 2 "Make Your NPC Comment and Move Along at the End of SoD"
 /* (T2) Let Biff join after PC escaped from prison (if there is still a free slot in the group) */
 EXTEND_TOP ~bdcut64x.bcs~ ~%MOD_FOLDER%/baf/xxbdcut64x.baf~
   EVALUATE_BUFFER
+*/
+
+/* [DEPRECATED] - refer to Tutorial 2 "Make Your NPC Comment and Move Along at the End of SoD"
+/* (T2) Biff should move with the group in the last area (abduction scene, bd6100.are) */
+COPY_EXISTING ~bdcut65.bcs~ ~override~
+  DECOMPILE_AND_PATCH BEGIN
+
+		SPRINT textToReplace ~\(SetAreaScript("",OVERRIDE)\)[%newline%]*\(END\)~
+		COUNT_REGEXP_INSTANCES ~%textToReplace%~ num_matches
+		PATCH_IF (num_matches > 0) BEGIN
+			REPLACE_TEXTUALLY ~%textToReplace%~ ~\1 
+\2 
+
+IF
+	Global("xxBiff_SoDEndMove","bd6100",0) 
+	InMyArea("xxBiff")
+	!Dead("xxBiff")  
+	!InParty("xxBiff")  
+THEN
+	RESPONSE #100
+		CutSceneId(Player1)
+		SetGlobal("xxBiff_SoDEndMove","bd6100",1) 
+		ActionOverride("xxBiff",MoveToPoint([930.795])) //you can leave these coordinates for your NPC, too
+END
+~
+			PATCH_PRINT ~Patching: %num_matches% matches found in %SOURCE_FILESPEC% for REPLACE_TEXTUALLY: %textToReplace%~
+		END ELSE BEGIN
+			PATCH_WARN ~WARNING: could not find %textToReplace% in %SOURCE_FILESPEC%~
+		END
+	END
+BUT_ONLY_IF_IT_CHANGES
+*/
 
 
 

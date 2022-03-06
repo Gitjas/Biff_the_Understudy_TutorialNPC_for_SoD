@@ -9,6 +9,7 @@ IF
 THEN
 	RESPONSE #0
 		SetGlobal("xxBiff_SoDEndMove","bd6200",1)
+		SetGlobal("bd_meet_canon_party","bd6200",1) //tells Imoen that there is someone waiting at the clearing (used in her greetings dialogue at the sewer exit)
 		MoveGlobal("bd6200","xxBiff",[1680.1135]) //chose coordinates near the meeting place: the clearing at the southeast. For example: Minsc is waiting at [1660.1120]
 		ActionOverride("xxBiff",SetSequence(SEQ_READY)) //from IESDP: This action instructs the active creature to perform the specified animation sequence. Values are from seq.ids.
 		ActionOverride("xxBiff",Face(NW)) //depending on where the NPC stands, they should face the north east
