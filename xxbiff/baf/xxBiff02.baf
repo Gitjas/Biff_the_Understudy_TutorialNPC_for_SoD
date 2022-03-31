@@ -1,0 +1,26 @@
+/*  banter "area" script "xxBiff02.baf" with 2nd Biff-Corwin banter: This banter is started by Corwin: */
+IF
+	InMyArea(Player1)
+	!ActuallyInCombat()
+	!GlobalTimerNotExpired("BD_BANTER_DELAY","MYAREA") //this means "timer IS expired" or "was never set yet"
+	!Global("xxBiff_SoD_xxBiff02","MYAREA",-1) //stop the loop of this banter if the variable is at "-1"
+	Switch("xxBiff_SoD_xxBiff02","MYAREA") //this switches between the different RESPONSE #x depending on the variable's value ("x").
+THEN
+	RESPONSE #0 
+		DisplayStringHead("CORWIN",~So, what does it feel like, being a real NPC and not only the Understudy?~)  
+		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",7) //The value given here is the time in seconds until the next NPC line is shown. Chose the value depending on the length of the sentence / audio file.
+		SetGlobal("xx_SoD_xxBiff01","MYAREA",10) //This makes the "switch" jump to the "RESPONSE #10" for the next loop.
+	RESPONSE #10
+		DisplayStringHead("xxBiff",~Wait, I don't know that line... Oh, it's a real question! Thank you! Thank you, Corwin! I feel great!~)
+		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",4)
+		SetGlobal("xxBiff_SoD_CorwinBanter","GLOBAL",6) // close variable of 2nd banter - was at "5"
+		SetGlobal("xxBiff_SoD_xxBiff02","MYAREA",-1) //this defines the banter to end, and the wanted "loop" cycle stops. The script is still active, so the second script blocks gets executed:
+END
+
+/* second script block: deactivate this script by resetting the area script. This script block is needed once at the end of the banter "area" file. */
+IF
+	!GlobalTimerNotExpired("BD_BANTER_DELAY","MYAREA") //this means "timer IS expired"
+THEN
+	RESPONSE #100
+		SetAreaScript("",GENERAL) //sets area script back (default is "no GENERAL script")
+END

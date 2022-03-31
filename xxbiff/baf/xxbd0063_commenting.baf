@@ -1,0 +1,23 @@
+/* xxbd0063_commenting.baf */
+
+/* (T3) Warn about the place being a good ambush point: */
+IF
+	Global("BD_NPC02","MYAREA",0)
+	IfValidForPartyDialog("xxBiff")  
+	Delay(3)
+THEN
+	RESPONSE #100
+		SetGlobal("BD_NPC02","MYAREA",1)
+		DisplayStringHead("xxBiff",~This looks like the ambush site we are supposed to encounter~)  
+END
+
+/* Warn about the place being a a dead magic zone (mages only): */
+IF
+	Global("BD_NPC01","MYAREA",0)
+	IfValidForPartyDialog("xxBiff")  
+	Delay(3)
+THEN
+	RESPONSE #100
+		SetGlobal("BD_NPC01","MYAREA",1)
+		DisplayStringHead("xxBiff",~By the way, this is a dead magic zone.~)  
+END

@@ -1,8 +1,8 @@
-/* xxbdcut59b.baf:
-Global("xxBiff_kicked_bd4700","global",1): Biff was left standing in hell dimension - make sure he's coming back to the castle, too */
+/* xxbdcut59b.baf */
 
+/* Global("xxBiff_kicked_bd4700","global",1): Biff was left standing in hell dimension - make sure he's coming back to the castle, too */
 IF
-  Global("xxBiff_kicked_bd4700","global",1) //set in xxBiffsP.dlg, see below
+  Global("xxBiff_kicked_bd4700","global",1) //set in xxBiffsP.dlg
   !Dead("xxBiff")
   !InParty("xxBiff")
 THEN

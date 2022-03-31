@@ -1,0 +1,14 @@
+/* xxbd2000_commenting.baf */
+/* (T3) Battle at Bridgefort starts */
+IF
+	Global("bd_plot","global",250)
+	!GlobalTimerNotExpired("bd_mdd410z_ot_timer","bd2000")  
+	Global("xxBiff_bd_ot","bd2000",0)  
+	IfValidForPartyDialog("xxBiff")  
+	TriggerOverride("xxBiff",Range([ENEMY.0.0.0.CRUSADERS],30))
+THEN
+	RESPONSE #100
+		SetGlobalTimer("bd_mdd410z_ot_timer","bd2000",THREE_MINUTES)  // Boareskyr Bridge & Bridgefort
+		SetGlobal("xxBiff_bd_ot","bd2000",1)  
+		DisplayStringHead("xxBiff",~Alright, you know what to do! Noone fall into their weapons, please!~)  
+END

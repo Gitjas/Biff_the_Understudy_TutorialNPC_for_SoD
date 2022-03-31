@@ -1,4 +1,4 @@
-/* xxbd4100.baf. CHARNAME is accused of murder. Biff comments */
+/* (T2) xxbd4100.baf. CHARNAME is accused of murder. Biff comments */
 
 /* first script block: Biff makes a comment in case of lower reputation */
 IF
@@ -14,6 +14,7 @@ THEN
 		SetGlobal("xxBiff_SoDMurderAccusations","bd4100",1)
 		SetGlobalTimer("bd_mdd1352_ot_timer","bd4100",ONE_ROUND) //set the timer according to how long the comment is. ONE_ROUND equals ONE_MINUTE = 6 seconds realtime. You can put in the amount of realtime seconds as a number directly.
 		DisplayStringHead("xxBiff",~Well, <CHARNAME> might have not been the friendliest, but I know the script so... Nope, I don't think <PRO_HESHE> did it.~)  
+		Continue()
 END
 
 /* second script block: Biff makes a comment in case of higher reputation */
@@ -29,5 +30,6 @@ THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_SoDMurderAccusations","bd4100",1)
 		SetGlobalTimer("bd_mdd1352_ot_timer","bd4100",ONE_ROUND)
-		DisplayStringHead("xxBiff",~Whoa, <CHARNAME>'s such a nice fellow. (And I know the script so... Nope, I don't think <PRO_HESHE> did it.)~)  
+		DisplayStringHead("xxBiff",~Whoa, <CHARNAME>'s such a nice fellow. (And I know the script so... Nope, I don't think <PRO_HESHE> did it.)~)   
+		Continue()
 END

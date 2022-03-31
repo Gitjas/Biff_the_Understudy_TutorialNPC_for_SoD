@@ -1,0 +1,45 @@
+/* bd0120_commenting.baf
+In Korlasz' Crypt: NPC state their plans after the last follower of Sarevok will be defeated.
+This will be patched to both bd0120.bcs and bd0130.bcs. */
+
+/* First comment: before Korlasz will be defeated. */
+IF
+	Global("xxBiff_SoDleavingcomment","global",0)
+	CombatCounter(0)
+	GlobalGT("bd_leaving_ot","GLOBAL",0)
+	GlobalLT("bd_leaving_ot","GLOBAL",7)
+	IsValidForPartyDialogue("xxBiff")  
+	GlobalTimerExpired("bd_leaving_ot_timer","global")
+	!Dead("bdkorlas")  // Korlasz
+	!Global("BD_KORLASZ_SURRENDER","GLOBAL",1)
+THEN
+	RESPONSE #200
+		Continue()
+	RESPONSE #100
+		IncrementGlobal("bd_leaving_ot","global",1)
+		SetGlobal("xxBiff_SoDleavingcomment","global",1)
+		SetGlobalTimerRandom("bd_leaving_ot_timer","global",TWENTY_MINUTES,THIRTY_MINUTES)
+		DisplayStringHead("xxBiff",~When we are finished here, I'll go and see whether I'll find a real theatre to perform... ah, no, it's too early to say this.~)
+END
+
+/* Second comment: after Korlasz defeated */
+IF
+	GlobalLT("xxBiff_SoDleavingcomment","global",2)
+	CombatCounter(0)
+	GlobalGT("bd_leaving2_ot","GLOBAL",0)
+	GlobalLT("bd_leaving2_ot","GLOBAL",7)
+	IsValidForPartyDialogue("xxBiff")  
+	GlobalTimerExpired("bd_leaving2_ot_timer","global")
+	OR(2)
+		Dead("bdkorlas")  // Korlasz
+		Global("BD_KORLASZ_SURRENDER","GLOBAL",1)
+THEN
+	RESPONSE #200
+		Continue()
+	RESPONSE #100
+		BanterBlockTime(100)
+		IncrementGlobal("bd_leaving2_ot","global",1)
+		SetGlobal("xxBiff_SoDleavingcomment","global",2)
+		SetGlobalTimerRandom("bd_leaving2_ot_timer","global",EIGHT_MINUTES,THIRTEEN_MINUTES)
+		DisplayStringWait("xxBiff",~Well done, everyone.~)  
+END

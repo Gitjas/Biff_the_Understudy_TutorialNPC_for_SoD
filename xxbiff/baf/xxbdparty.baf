@@ -1,8 +1,9 @@
 /* xxbdparty.baf:
 Addition to bdparty.bcs to toggle moving back to the current camp if kicked out of party. */
+/* we do not add "Continue()" here as it might leads to bugs for our mod - this is an exception */
 
 IF
-  Global("bd_npc_camp","locals",1)  //this is set via the kickout dialogue, see below
+  Global("bd_npc_camp","locals",1)  //this is set via the kickout dialogue xxBiffsP.dlg
   Name("xxBiff",Myself)
   Switch("bd_npc_camp_chapter","global")  //this makes sure the NPC goes back to the correct camp along SoD's campaign
   OR(2)

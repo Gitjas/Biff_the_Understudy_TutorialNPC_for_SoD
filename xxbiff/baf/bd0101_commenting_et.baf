@@ -1,0 +1,24 @@
+/* (T3) bd0101_commenting_et.baf; this goes into bd0101.bcs */
+/* Waiting to march out of BG city: make Biff comment while waiting to leave */
+IF
+	Global("bd_mdd010z_ot","bd0101",1)
+	!GlobalTimerNotExpired("bd_mdd010z_ot_timer","bd0101")
+	InMyArea("xxBiff")  
+	!InParty("xxBiff")  
+THEN
+	RESPONSE #10
+		SetGlobalTimer("bd_mdd010z_ot_timer","bd0101",ONE_ROUND)
+		SetGlobal("bd_mdd010z_ot","bd0101",0)
+		DisplayStringHead("xxBiff",~Wow, this is really exciting.~)
+		Continue()
+	RESPONSE #10
+		SetGlobalTimer("bd_mdd010z_ot_timer","bd0101",ONE_ROUND)
+		SetGlobal("bd_mdd010z_ot","bd0101",0)
+		DisplayStringHead("xxBiff",~That is really a huge crowd.~)
+		Continue()
+	RESPONSE #10
+		SetGlobalTimer("bd_mdd010z_ot_timer","bd0101",ONE_ROUND)
+		SetGlobal("bd_mdd010z_ot","bd0101",0)
+		DisplayStringHead("xxBiff",~Wait... do I have all the scripts? (murmurs) Corwin, Dunkan, Glint... Yes, all here. (phew)~)
+		Continue()
+END

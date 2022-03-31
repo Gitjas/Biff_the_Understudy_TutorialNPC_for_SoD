@@ -1,5 +1,4 @@
 /* end of SoD. Biff will be at the meeting place */
-
 IF
 	Global("chapter","global",13)
 	Global("xxBiff_SoDEndMove","bd6200",0)
@@ -7,13 +6,13 @@ IF
 	!InPartyAllowDead("xxBiff")
 	Global("xxBiff_SoDparty_epilogue","GLOBAL",1) //this is the variable that was set in the xxbdcut61.baf
 THEN
-	RESPONSE #0
+	RESPONSE #100
 		SetGlobal("xxBiff_SoDEndMove","bd6200",1)
 		SetGlobal("bd_meet_canon_party","bd6200",1) //tells Imoen that there is someone waiting at the clearing (used in her greetings dialogue at the sewer exit)
 		MoveGlobal("bd6200","xxBiff",[1680.1135]) //chose coordinates near the meeting place: the clearing at the southeast. For example: Minsc is waiting at [1660.1120]
 		ActionOverride("xxBiff",SetSequence(SEQ_READY)) //from IESDP: This action instructs the active creature to perform the specified animation sequence. Values are from seq.ids.
 		ActionOverride("xxBiff",Face(NW)) //depending on where the NPC stands, they should face the north east
-		ActionOverride("xxBiff",SetGlobal("bd_joined","locals",0)) //we remember these from tutorial 1
+		ActionOverride("xxBiff",SetGlobal("bd_joined","locals",0)) //we remember these from Tutorial Part 1
 		ActionOverride("xxBiff",SetGlobal("bd_retreat","locals",0))
 		ActionOverride("xxBiff",SaveObjectLocation("LOCALS","bd_default_loc",Myself))
 		ReallyForceSpellDeadRES("bdrejuve","xxBiff")  // heals and removes spell effects

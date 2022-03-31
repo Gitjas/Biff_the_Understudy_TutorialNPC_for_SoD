@@ -1,5 +1,5 @@
 /* xxbdcut58.baf
-Biff was left standing in bd4700.are - make sure he's coming to the last hell area, too */
+Biff was left standing in bd4700 - make sure he's coming to the last hell area, too */
 
 IF
   Global("xxBiff_kicked_bd4700","global",1) //set in xxBiffsP.dlg, see below

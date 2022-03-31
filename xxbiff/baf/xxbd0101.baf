@@ -1,14 +1,29 @@
-/* xxbd0101.baf
-1. It's a new soD game, or Biff wasn't spawned yet in SoD because the player went straight for the crusade */
+/* (T1) xxbd0101.baf // Ducal Palace, Leaving BG */
+
+/* Close the spawning/moving variable in case Biff is already in party */
+IF
+  Global("xxBiff_MoveCamp","MYAREA",0)  
+  OR(2)
+    InPartyAllowDead("xxBiff")  
+    Dead("xxBiff")
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)  
+    Continue()
+END
+
+/* 1. Biff needs to be spawned anew: Global("xxBiffSpawn","GLOBAL",0) is still at 0 because the player did not leave the palace to look for companions but went straight to leaving BG city with the Flaming Fist forces, plus Biff was not in the game before */
 IF
   !Dead("xxBiff")
   !InPartyAllowDead("xxBiff")
-  Global("xxBiffSpawn","GLOBAL",0) //true for a new SoD game
-  Global("xxBiff_MoveCamp","MYAREA",0) //so it happens only once
+  !BeenInParty("xxBiff") //Biff was never in party
+  Global("xxBiffSpawnBG1","GLOBAL",0) //Biff wasn't spawned in BG1
+  Global("xxBiffSpawn","GLOBAL",0) //Biff wasn't spawned in SoD before
+  Global("xxBiff_MoveCamp","MYAREA",0) //so it happens only once in this area
 THEN
   RESPONSE #100
     SetGlobal("xxBiff_MoveCamp","MYAREA",1)
-    SetGlobal("xxBiffSpawn","GLOBAL",2)
+    SetGlobal("xxBiffSpawn","GLOBAL",1) //Biff was spawned in SoD
     CreateCreature("xxBiff",[601.599],S)  //for Biff, these are same coordinates as in xxbd0010.baf since he was in front of the Palace before, too
     ActionOverride("xxBiff",MakeGlobalOverride())
     ChangeSpecifics("xxBiff",ALLIES)
@@ -17,21 +32,23 @@ THEN
     ActionOverride("xxBiff",ChangeAIScript("BDSHOUT",RACE))
     ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL))  //Biff's a fighter so he gets a fighter script. Have a look at bdparty.bcs to see what other scripts are available for the different classes.
     ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
-    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+    ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD 
+    Continue()
 END
 
-/* 2+3: Biff was in party before (e.g. as a BG:EE NPC or in SoD beginning) OR he was spawned in SoD before */
+/* 2+3: Biff needs to be moved here: he was either in party before (e.g. as a BG:EE NPC or in SoD beginning) OR he was spawned in SoD before */
 IF
   !Dead("xxBiff")
   !InPartyAllowDead("xxBiff")
-  OR(2)
+  OR(3) //One of the 3 following conditions needs to be true
 	BeenInParty("xxBiff") //this is true if Biff was in party before
+	GlobalGT("xxBiffSpawnBG1","GLOBAL",0) //Biff was already spawned in BG1
 	Global("xxBiffSpawn","GLOBAL",1) //this is true if he was already spawned in bd0010.are
-  Global("xxBiff_MoveCamp","MYAREA",0)  //so it happens only once
+  Global("xxBiff_MoveCamp","MYAREA",0)  //so this happens only once in this area
 THEN
   RESPONSE #100
     SetGlobal("xxBiff_MoveCamp","MYAREA",1)
-    SetGlobal("xxBiffSpawn","GLOBAL",2)
+    SetGlobal("xxBiffSpawn","GLOBAL",1) //Biff was spawned in SoD
     MoveGlobal("bd0101","xxBiff",[601.599])
     ActionOverride("xxBiff",Face(S))    //or any other direction depending on the coordinates
     ApplySpellRES("bdrejuve","xxBiff")  //completely heals and removes all spell effects
@@ -46,5 +63,5 @@ THEN
     ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL)) //Biff's a fighter so he gets a fighter script. Have a look at bdparty.bcs to see what other scripts are available for the different classes.
     ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
     ActionOverride("xxBiff",SetDialog("xxBiffs")  //greeting dialogue in SoD
+    Continue()
 END
-

@@ -1,48 +1,48 @@
-/*  banter "area" script "xxBiff01.baf" with Biff-Corwin banter including Minsc's interjection: */
+/*  banter "area" script "xxBiff01.baf" with 1st Biff-Corwin banter including Minsc's interjection: */
 
 /* this script block toggles Minsc's line: if he is there an can talk, his line will come before Corwin's. */
 IF
-	Global("xx_SoD_xxBiff01","MYAREA",10) //"10" means Corwin's line would be next
-	Global("xx_SoD_xxBiff01_2","MYAREA",0)
+	Global("xxBiff_SoD_xxBiff01","MYAREA",10) //"10" means Corwin's line would be next
+	Global("xxBiff_SoD_xxBiff01_2","MYAREA",0) //make sure this script block only runs once when it should
 	IfValidForPartyDialogue("MINSC")  // Minsc is present and can talk
 THEN
 	RESPONSE #100
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",2) //variable is set to "2" so now Minsc can say his line
-		SetGlobal("xx_SoD_xxBiff01_2","MYAREA",1)
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",2) //variable is set to "2" so now Minsc can say his line
+		SetGlobal("xxBiff_SoD_xxBiff01_2","MYAREA",1) //close variable of this script block so it only runs once
 END
 
 IF
 	InMyArea(Player1)
 	!ActuallyInCombat()
 	!GlobalTimerNotExpired("BD_BANTER_DELAY","MYAREA") //this means "timer IS expired" or "was never set yet"
-	!Global("xx_SoD_xxBiff01","MYAREA",-1) //This is how SoD does it, with one banter per file. If you want to put all banters into one file, use "GlobalGT("xx_SoD_xxBiff01","MYAREA",0)" instead, so only this banter can fire.
-	Switch("xx_SoD_xxBiff01","MYAREA") //this switches between the different RESPONSE #x depending on the variable's value ("x").
+	!Global("xxBiff_SoD_xxBiff01","MYAREA",-1) //stop the loop if the variable is at "-1"
+	Switch("xxBiff_SoD_xxBiff01","MYAREA") //this switches between the different RESPONSE #x depending on the variable's value ("x").
 THEN
-	RESPONSE #0 //This is how SoD does it, with one banter per file. 
-	//use "RESPONSE #1" instead if you want to put all banters into one file and set the Global("xx_SoD_xxBiff01","MYAREA",1) to "1" in Biff's script (because then the variable is already at 1 when the script is called.)
+	RESPONSE #0 
 		DisplayStringHead("xxBiff",~I'm not sure what I should be talking about. I know all the other NPC's lines, though! Pretend I'm Minsc, yes?~)  
-		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",9) 
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",10) 
+		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",9) //The value given here is the time in seconds until the next NPC line is shown. Chose the value depending on the length of the sentence / audio file.
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",10) 
 	RESPONSE #2 //This is Minsc's line
 		DisplayStringHead("MINSC",~Ah, but Biff will never be a real Minsc, without a giant space hamster!~)  
 		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",7) 
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",10) //now the variable is reset to "10" and Corwin's line will fire next.
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",10) //This makes the "switch" jump to the "RESPONSE #10" for the next loop: the script is still active, the script block gets executed again, but this time, Corwin replies:
 	RESPONSE #10
-		DisplayStringHead("CORWIN",58849)  // There's no shortfall of faces deserving a good kick in this world. I'm sure we'll come across one sooner than later.
+		DisplayStringHead("CORWIN",%2%58849)  // ~There's no shortfall of faces deserving a good kick in this world. I'm sure we'll come across one sooner than later.~ - We use existing lines from here, the string numbers have to be ajusted for EET. //the "%2%" is for unifying string reference numbers for SoD and EET. Definition and use please refer to Modding Tutorial Part 3, Chapter "Training the Recruits in the Coalition Camp".
 		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",8)
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",20)
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",20)
 	RESPONSE #20
-		DisplayStringHead("xxBiff",58850)  // And then Minsc does what he does best! Hehe!
+		DisplayStringHead("xxBiff",%2%58850)  // ~And then Minsc does what he does best! Hehe!~ 
 		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",4)
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",30)
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",30)
 	RESPONSE #30
-		DisplayStringHead("corwin",58851)  // Ramble nonsensically to his pet rodent about other peoples' rears?
-		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",ONE_MINUTE) 
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",40)
+		DisplayStringHead("corwin",%2%58851)  // ~Ramble nonsensically to his pet rodent about other peoples' rears?~
+		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",ONE_MINUTE) //With ONE_MINUTE = 6
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",40)
 	RESPONSE #40
-		DisplayStringHead("xxBiff",58852)  // And then Minsc will do what he does second best!
+		DisplayStringHead("xxBiff",%2%58852)  // ~And then Minsc will do what he does second best!~
 		SetGlobalTimer("BD_BANTER_DELAY","MYAREA",4)
-		SetGlobal("xx_SoD_xxBiff01","MYAREA",-1) 
+		SetGlobal("xxBiff_SoD_CorwinBanter","GLOBAL",3) // close variable after 1st banter
+		SetGlobal("xxBiff_SoD_xxBiff01","MYAREA",-1) //this defines the banter to end, and the wanted "loop" cycle stops. The script is still active, so the second script blocks gets executed:
 END
 
 /* second script block: deactivate this script by resetting the area script. This script block is needed once at the end of the banter "area" file. */
@@ -50,5 +50,5 @@ IF
 	!GlobalTimerNotExpired("BD_BANTER_DELAY","MYAREA") 
 THEN
 	RESPONSE #100
-		SetAreaScript("",GENERAL) 
+		SetAreaScript("",GENERAL) //sets area script back (default is "no GENERAL script")
 END
