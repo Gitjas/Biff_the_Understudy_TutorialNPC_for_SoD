@@ -257,7 +257,7 @@ EXTEND_TOP ~bd2000.bcs~ ~%MOD_FOLDER%/baf/xxbd2000_commenting_et.baf~
   EVALUATE_BUFFER
 
 /* (T1) Last camp is in bd3000.are. In case Biff was never in party or kicked out to wait somewhere else, he will also be back in the (new) camp. */
-EXTEND_BOTTOM ~bd3000.bcs~ ~%MOD_FOLDER%/baf/xxbd3000.baf~
+EXTEND_TOP ~bd3000.bcs~ ~%MOD_FOLDER%/baf/xxbd3000.baf~
   EVALUATE_BUFFER
 
 /* (T1) Patch your NPC's "Move Camp" variable to the original game's script block (bd3000.bcs) */
@@ -410,8 +410,7 @@ BUT_ONLY_IF_IT_CHANGES
 */
 
 
-/* (T3 "PC killed Crusaders using the Spikes Trap in Temple of Bhaal (good aligned NPCs)") */
-/* React in case crusaders in cages are killed by spikes (bd7230.are) */
+/* (T3) React in case crusaders in cages are killed by spikes (bd7230.are) */
 /* Patch bdlever2.bcs */
 COPY_EXISTING ~bdlever2.BCS~ ~override~
 	DECOMPILE_AND_PATCH BEGIN
