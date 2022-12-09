@@ -1,0 +1,28 @@
+/* bd1000_patch.baf */
+/* (T1) Biff moves to first war camp at Coast Way Crossing, bd1000.are */
+
+/* Move Biff here. He was already spawned at some point. */
+IF
+  Global("xxBiff_Spawn","GLOBAL",1) //Biff was spawned in SoD
+  Global("xxBiff_MoveCamp","MYAREA",0) //so it happens only once in this area
+  !Dead("xxBiff")
+  !InPartyAllowDead("xxBiff")
+THEN
+  RESPONSE #100
+    SetGlobal("xxBiff_MoveCamp","MYAREA",1)
+    MoveGlobal("bd1000","xxBiff",[720.3784]) 
+    ActionOverride("xxBiff",Face(N))
+    ReallyForceSpellDeadRES("bdrejuve","xxBiff")
+    ChangeEnemyAlly("xxBiff",NEUTRAL)
+    ChangeSpecifics("xxBiff",ALLIES)
+    ActionOverride("xxBiff",SetGlobal("bd_joined","locals",0))
+    ActionOverride("xxBiff",SetGlobal("bd_retreat","locals",0))
+    ActionOverride("xxBiff",SaveObjectLocation("LOCALS","bd_default_loc",Myself))
+    ActionOverride("xxBiff",ChangeAIScript("xxBiffs",OVERRIDE))
+    ActionOverride("xxBiff",ChangeAIScript("bdasc3",CLASS))
+    ActionOverride("xxBiff",ChangeAIScript("BDSHOUT",RACE))
+    ActionOverride("xxBiff",ChangeAIScript("BDFIGH01",GENERAL))
+    ActionOverride("xxBiff",ChangeAIScript("",DEFAULT))
+    ActionOverride("xxBiff",SetDialogue("xxBiffsP")) //kickout dialogue: assuming the PC already talked to Biff
+    Continue()
+END

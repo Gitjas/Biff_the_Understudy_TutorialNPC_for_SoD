@@ -1,0 +1,109 @@
+I used the Biff SoD NPC Tutorial mod to create Ajantis for SoD as a "one day NPC" (an old tradition to create an NPC, originally for BGII, in 24 hours including all "crucial" story interjections). It took me longer in the end, but the tutorial mod has a naming convention which can be turned into your own prefix and NPC name syntax if you follow the folling steps which I will give an example for Ajantis SoD:
+
+Mass replace the following strings inside the mod folder "biffsodtutorial", for example by using grepWin. Do not forget to copy this file you are reading right now outside the mod folder before doing so. (I nearly did...):
+
+CreateCreature("xxBiff" -> CreateCreature("c#ajsod6" //name of the cre file for the SoD version of your NPC
+
+"xxBiff" -> "Ajantis" //death variable
+
+Global("C#AjSoD_SpawnBG1","GLOBAL",0) -> !BeenInParty("Ajantis")//check variable if the NPC was already spawned / it is a continuous game from BG1 / was already in party, i.e. already exists and should not be spawned anew. I'll take "BeenInParty("Ajantis")" for Ajantis.
+
+Global("xxBiff_sod_romanceactive","global",2) -> Global("X#AjantisRomanceActive","GLOBAL",2) //romance variable for committed romance. For Ajantis I'll use the BG1NPC romance variables.
+
+xxBiff_ -> C#AjSoD_ //variable prefix; dlg state prefix, filename prefix (preferably 7-8 digits so area variables' names do not get too long)
+
+xxBiffsP -> BDAJANTI // kickout dialogue (max 8 digits)
+
+xxBiffsG C#AjSoDG //greetings dialogue (max 8 digits)
+
+xxbiffs.baf -> bdajanti_patch.baf //This is the file name inside the tp2. For Ajantis, I took the name BDAJANTI.bcs for his OVERRIDE script which was used in an earlier BG:EE version, so I used the file to *patch* it to BDAJANTI.bcs and also changed the according line in the tp2. If you COMPILE the file directly as your NPC's script bcs like it is done in the Biff Tutorial Mod, you would call it like the script name.
+
+xxBiffs -> BDAJANTI //override script (max 8 digits)
+
+xxBiffJ -> BDAJANTJ //joined dlg (max 8 digits)
+
+xxBiffD -> AJANTD //dream script
+
+xxbiffbx.2da -> c#ajsdbx.2da //name of banter 2da
+
+xxBiffB -> BDAJANTB //banter dlg
+
+xxBiff01 -> c#ajsd01 //script name for first Corwin NPC banter
+
+xxBiff02 -> c#ajsd02 //script name for first Corwin NPC banter
+
+xxBiffpm -> //medium sized portrait - not needed for Ajantis
+
+xxBiffpl -> //large sized portrait - not needed for Ajantis
+
+biffsodtutorial -> ajantissod //mod folder inside tp2
+
+readme.biff -> readme.ajantissod //readme name inside tp2
+
+xxBiff.cre -> c#ajsod6.cre //cre file name for new SoD game
+
+If all above are done, replace:
+
+xxBiff -> Ajantis //death variable inside xxbiffbx.2da
+
+After that, all mentioning of "Biff" is his name in comments because we replaced all others. You can either leave these or replace them with your NPC's name:
+
+Biff -> Ajantis (mentioning of name in comments)
+
+If all text strings inside the mod package are changed, there is some file names that need adjustment:
+
+Replace any incident of "biffsodtutorial" in folder or mad names:
+
+biffsodtutorial -> ajantissod //mod folder (same name as above)
+biffsodtutorial.ini -> ajantissod.ini
+biffsodtutorial.tp2 -> ajantissod.tp2
+
+readme.biff.english.txt -> readme.ajantissod.english.txt //rename and adapt or delete and create an own readme (same name as above)
+
+xxbiffbx.2da -> c#ajsdbx.2da (same name as above)
+
+xxBiff01.baf -> c#ajsd01.baf //script name for first Corwin NPC banter (needs more adjustment inside) (same name as above)
+
+xxBiff02.baf -> c#ajsd02.baf //script name for second Corwin NPC banter (needs more adjustment inside) (same name as above)
+
+xxbiffs.baf -> bdajanti_patch.baf //same name as above
+
+xxBiff.cre -> c#ajsod6.cre //this is your NPC's cre file for a new SoD game. For a continuous game from BG1, the existing Ajantis will be moved into the SoD campaign. You need to create a new one according to your NPC's class and gender. 
+
+After adjusting all names inside the files and the file and folder names itself, you need to do the following adjustments for your NPC mod:
+
+-Adjust the details for the copied cre file in the tp2 (name, gretings dialogue, scripts, soundset. Some of them should already be changed by the mass replace you already did).
+-Change your NPC's starting location if they do not appear in bd0010.are the first time in SoD. This affects the file bd0010_patch.baf including the relevant lines in the tp2 to compile "bd0010_patch.baf".
+Note: if your NPC does not appear in BG city already, this also affects all files for bd0101.are and bd0101.bcs (bd0101_commenting_et.baf, bd0101_patch.baf, bd0103_commenting_et.baf).
+-Change the coordinates where your NPC will be spawned in all instances. This is necessary, or NPCs will stand at the same spot on top of each other. This affects the files: 
+	--bd0010_patch.baf (or where your NPC will appear the first time)
+	--bd0101_patch.baf (if still relevant)
+	--bd1000_patch.baf
+	--bd3000_patch.baf
+	--bd6200_patch.baf
+	--bd7100_patch.baf
+	--bdasc3_patch.baf
+	--bdc116d_patch.baf
+	--bdcut58_patch.baf
+	--bdcut59b_patch.baf
+	--bdparty_patch.baf
+	--JumpToPoint([560.262]) in xxbiffs.baf
+-adjust the greetings dialogue accordingly
+-adjust the kickout dialogue accordingly
+-adjust the content of the banter files which in the original are called xxBiff01.bcs and xxBiff02.bcs, and acordingly banter_sod.d with banters for your own NPC.
+-go through the files carefully and delete / uncomment the content that fits your NPC.
+-Change all text lines inside the remaining files and the tra-files to what your NPC would say.
+-To make it an NPC you want to take along inside the game, you'd need to add a portrait for which you have the permission to use.
+
+Congratulations! You now have a more or less working NPC mod with all needed interjections and inclusion into cutscenes to make them behave like an original SoD NPC.
+
+The following would still need work to make your NPC a full fledged NPC mod:
+-add a soundset, music etc. for which you have the permission to use.
+-add banter for the other SoD NPCs plus mod NPCs at gusto.
+-add dialogues with the PC, a friendship or a romance path.
+-add a quest for your NPC.
+
+For the latter four is no example inside the mod tutrial package, but there is lots of NPC mods around that you can use as a reference.
+
+And that's it! You are done. Enjoy your NPC in your game!
+ 

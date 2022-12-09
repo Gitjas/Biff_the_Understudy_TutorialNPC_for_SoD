@@ -1,0 +1,21 @@
+/* bd0104_patch.baf : Biff visits the PC in prison */
+
+/* Active romance: Biff visits after Corwin so the original order is preserved. */
+/* this can also be used if your NPC should visit in any case */
+IF
+	Global("chapter","global",13)
+	GlobalTimerExpired("bd_jail_visitors_timer","bd0104")  // Flaming Fist HQ
+	Global("bd_jail_visitors","bd0104",4)  //This calls romance interests if there are any
+//	Global("xxBiff_sod_romanceactive","global",2) //your NPC's romance variable. Enable this check if your NPC should only visit for an active romance.
+	Global("xxBiff_SoDparty_epilogue","GLOBAL",1) //some variable that determines whether Biff will appear. For Biff, we take the variable that determines whether he will wait outside the prison
+	Global("xxBiff_jail_visitors","bd0104",0) //check variable for this script block
+	!Dead("xxBiff")  
+THEN
+	RESPONSE #100
+		SetGlobal("xxBiff_jail_visitors","bd0104",1) //trigger variable for Biff's dialogue
+		SetGlobal("bd_jail_visitors","bd0104",5)  // Flaming Fist HQ
+		SetGlobalTimer("bd_jail_visitors2_timer","bd0104",TEN_ROUNDS)  //timer  needed so some other stuff will wait
+		MoveGlobal("bd0104","xxBiff",[720.620])  //coordinates true for all visiting NPCs
+		ActionOverride("xxBiff",ChangeAIScript("bdvisit",OVERRIDE)) //this script will handle the "NPC walks up to the PC's prison door and initiates dialogue"
+		Continue()
+END

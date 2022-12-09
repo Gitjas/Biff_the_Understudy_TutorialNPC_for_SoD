@@ -1,0 +1,14 @@
+/* bd4400_commenting.baf */
+/* (T3) Comment upon entering Avernus */
+IF
+	GlobalLT("bd_plot","global",505)
+	IfValidForPartyDialog("xxBiff")  
+	Global("xxBiff_bd_avernus_bark","bd4400",0) 
+THEN
+	RESPONSE #50  //Remove this if your NPC should say their line always
+		Continue() //Remove this if your NPC should say their line always
+	RESPONSE #50 //change to #100 if your NPC should say their line always
+		DisplayStringWait("xxBiff",~It's hot in here!~) 
+	    SetGlobal("xxBiff_bd_avernus_bark","bd4400",0)  
+		SmallWait(8)
+END

@@ -1,0 +1,37 @@
+/* This section is deprecated alongside the according components to move the NPC at the end of SoD described in Tutorial 2 ("Make Your NPC Comment and Move Along at the End of SoD"). I'll leave it in so anyone interested can try to make this work without having to search for the involved scripts anew. */
+/* bd6100_commenting_et.baf */
+/* (T3) Last area bd6100.are: comment in abduction scene (for EET or SoD with Jastey's SoD Tweak Pack) */
+
+
+/* makes the NPC comment with a 33% chance during the rush of the attack */
+IF
+	!RealGlobalTimerExpired("bd_stop_alertbark","bd6100")
+	GlobalTimerExpired("bd_second_alertbark","BD6100")
+	GlobalGT("bd_Mdd1735a_ot","bd6100",0)
+	Global("xxBiff_alert","bd6100",0)
+	Global("bd_finale","bd6100",4)
+	IfValidForPartyDialog("xxBiff")  
+	TriggerOverride("xxBiff",Detect([ENEMY]))
+THEN
+	RESPONSE #200 //remove this if your NPC should comment always
+		Continue() //remove this if your NPC should comment always
+	RESPONSE #100
+		SetGlobal("xxBiff_alert","bd6100",1)
+		DisplayStringHead("xxBiff",~An ambush! They are attacking us!~)
+		SetGlobalTimerRandom("bd_second_alertbark","BD6100",2,4)
+		Continue()
+END
+
+/* makes the NPC comment with a 33% chance to fog before the black out */
+IF
+	GlobalTimerExpired("bd_effectbark","BD6100") 
+	Global("xxBiff_bd_effect","bd6100",0)  
+THEN
+	RESPONSE #200 //remove this if your NPC should comment always
+		Continue() //remove this if your NPC should comment always
+	RESPONSE #100
+		SetGlobal("xxBiff_bd_effect","bd6100",1)  
+		DisplayStringHead("xxBiff",~That fog stinks.~)
+		SetGlobalTimerRandom("bd_effectbark","BD6100",2,4)  
+		Continue()
+END

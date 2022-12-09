@@ -1,0 +1,118 @@
+/* Compatibility with Another fine Hell */
+ACTION_IF FILE_EXISTS_IN_GAME ~c#afh3.bcs~ THEN BEGIN
+  PRINT ~Another Fine Hell detected~ 
+
+/* If your NPC is treated as default and should just stay in the group: patch check variable for Another fine Hell to their leaving in bdcut61.bcs */
+COPY_EXISTING ~bdcut61.bcs~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		SPRINT textToReplace ~\(InParty("xxBiff")\)~
+		COUNT_REGEXP_INSTANCES ~%textToReplace%~ num_matches
+		PATCH_IF (num_matches > 0) BEGIN
+			REPLACE_TEXTUALLY ~%textToReplace%~ ~\1
+Global("C#AfHSoD_RevisedEnd","GLOBAL",0)~ 
+			PATCH_PRINT ~Patching: %num_matches% matches found in %SOURCE_FILESPEC% for REPLACE_TEXTUALLY: %textToReplace%~
+		END ELSE BEGIN
+			PATCH_WARN ~WARNING: could not find %textToReplace% in %SOURCE_FILESPEC%~
+		END
+	END
+BUT_ONLY 
+
+/* get state number for c#afhblt to add your NPC's comment after Duke Belt announced that the PC will have to leave the town:
+@77 = [Duke Belt]Sort your equipment and rest once again. Tomorrow morning we will take you out of the city unnoticed. */
+/* Your NPC would either say their farewells here (verbal only - leaving will be handled by bdcut61.bcs) or reassure that they will stay with the PC if they do */
+  OUTER_SET belt_interjection = STATE_WHICH_SAYS 77 IN ~c#anotherfinehell/translations/autotra/%s/anotherfinehell_sod.tra~ FROM ~c#afhblt~
+/* add interjection for NPC into Duke Belt's dialogue */
+<<<<<<<< .../add_xxbiff_afh_interjection.d
+I_C_T c#afhblt %belt_interjection% xxBiff_c#afhblt_77
+== xxBiffJ IF ~InParty("xxBiff") InMyArea("xxBiff")!StateCheck("xxBiff",CD_STATE_NOTVALID)
+!Global("xxBiff_sod_romanceactive","global",2)~ THEN ~So sorry, but it's my time to leave you.~
+END
+>>>>>>>>
+COMPILE EVALUATE_BUFFER ~.../add_xxbiff_afh_interjection.d~
+
+/* Romance case: if NPC is in party, they will give their romance dialogue now. If not, they will visit the PC later. (In the original game, this would be the visit inside the prison.) */
+/* Note: done like this, the addition enables other romances to play their final romance dialgue, too - all mod romances and one original game romance in case a multi romance tweak is used. */
+/* get state number for bdimoen to add the transaction for your NPC's romance case:
+@216 = ~[Imoen]You just rest here, <CHARNAME>, okay? I'll go and have a look around who of our old friends might still be around. This is important things we have to do!~ */
+  OUTER_SET imoen_transaction = STATE_WHICH_SAYS 216 IN ~c#anotherfinehell/translations/autotra/%s/anotherfinehell_sod.tra~ FROM ~bdimoen~
+/* add the transaction for your NPC's romance case */
+<<<<<<<< .../add_xxbiff_afh_romance_transaction.d
+APPEND xxBiffJ
+IF ~~ THEN xxBiff_afh_romance_final
+SAY ~I'd stay with you to the end - you know, if my script would allow it and we'd actually had a romance and stuff.~
+COPY_TRANS bdimoen %imoen_transaction%
+END
+END //APPEND
+
+EXTEND_BOTTOM bdimoen %imoen_transaction% 
+IF ~Global("xxBiff_sod_romanceactive","global",2)~ THEN DO ~SetGlobal("xxBiff_RIdone","GLOBAL",2)~ EXTERN xxBiffJ xxBiff_afh_romance_final
+END
+>>>>>>>>
+COMPILE EVALUATE_BUFFER ~.../add_xxbiff_afh_romance_transaction.d~ 
+
+/* If the active romancing NPC wasn't in party at the end (for whatever reason) they'll visit the PC in their chambers */
+/* insert script block into the script aftr Corwin's */
+/* Note: done like this, the addition enables other romances to play their final romance dialgue, too - all mod romances and one original game romance in case a multi romance tweak is used. */
+
+COPY_EXISTING ~c#afh3.BCS~ ~override~
+	DECOMPILE_AND_PATCH BEGIN
+		SPRINT textToReplace ~\(ActionOverride("bdschae2",ChangeAIScript("c#afhvis",OVERRIDE))\)~
+		COUNT_REGEXP_INSTANCES ~%textToReplace%~ num_matches
+		PATCH_IF (num_matches > 0) BEGIN
+			REPLACE_TEXTUALLY ~%textToReplace%~ ~\1 
+END //we start with an END for the script block before
+
+IF
+	Global("chapter","global",13)
+	Global("xxBiff_RIdone","GLOBAL",0)
+	GlobalTimerExpired("C#AfH_jail_visitors_timer","c#afh3")  
+	Global("C#AfH_jail_visitors","c#afh3",4)  
+	Global("xxBiff_sod_romanceactive","global",2)
+	!Dead("xxBiff")  
+THEN
+	RESPONSE #100
+		SetGlobal("xxBiff_RIdone","GLOBAL",1)  
+		SetGlobalTimer("C#AfH_jail_visitors_timer","c#afh3",TEN_ROUNDS)  
+		MoveGlobal("c#afh3","xxBiff",[596.220]) 
+		ActionOverride("xxBiff",SetDialog("xxBiffsP")) 
+		ActionOverride("xxBiff",ChangeAIScript("c#afhvis",OVERRIDE))
+/* no END here that is wanted behavior */~ 
+			PATCH_PRINT ~Patching: %num_matches% matches found in %SOURCE_FILESPEC% for REPLACE_TEXTUALLY: %textToReplace%~
+		END ELSE BEGIN
+			PATCH_WARN ~WARNING: could not find %textToReplace% in %SOURCE_FILESPEC%~
+		END
+	END
+BUT_ONLY
+
+/* We need to add the final romance dialogue to the kickout dialogue, as well. */
+<<<<<<<< .../add_xxbiff_afh_romance_visit.d
+APPEND xxBiffsP
+IF WEIGHT #-1
+~AreaCheck("c#afh3")
+Global("xxBiff_RIdone","GLOBAL",1)~ THEN xxBiff_afh_romance_final_visit
+SAY ~I'd stay with you to the end - you know, if my script would allow it and we'd actually had a romance and stuff.~
+IF ~~ THEN DO ~SetGlobal("xxBiff_RIdone","GLOBAL",2)~ EXIT
+END
+END //APPEND
+>>>>>>>>
+COMPILE EVALUATE_BUFFER ~.../add_xxbiff_afh_romance_visit.d~
+
+
+/* Unfortunately, the end cutscene (default in EET, restored for BG:SoD via tweak) is quite funky if mod NPCs are in the group instead of the default crew. Therefore, we add that the mod NPC will leave the group after the fade-to-black before the end ambush cutscene. */
+
+<<<<<<<< .../add_xxbiff_afh_bdcut64x.baf
+IF
+	InParty("xxBiff")  
+THEN
+	RESPONSE #100
+		CutSceneId("xxBiff")
+		SetGlobal("xxBiff_SoDToTheEnd","GLOBAL",1) //A variable to indicate that Biff was in the ambush scene, you can use this in the BGII part of your mod
+		ActionOverride("xxBiff",LeaveParty())
+		ActionOverride("xxBiff",DestroyAllFragileEquipment(ADAMANTINE)) //this destroys all drow equipment, just in case the NPC had any.
+END
+>>>>>>>>
+EXTEND_TOP ~bdcut64x.bcs~ ~.../add_xxbiff_afh_bdcut64x.baf~ 
+EVALUATE_BUFFER
+
+
+END //Another Fine Hell

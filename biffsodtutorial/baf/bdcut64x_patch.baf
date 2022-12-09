@@ -1,0 +1,21 @@
+/* [DEPRECATED] - refer to Tutorial 2 "Make Your NPC Comment and Move Along at the End of SoD" */
+
+/* bdcut64x_patch.baf
+Biff will not join after PC escaped from prison (simplifies scripting and prevents bugs for the default NPC crew in EET) */
+IF
+	Global("xxBiff_SoDEndMove","bd6200",1) //same as in bd6200_patch.bcs 
+	InMyArea("xxBiff")
+	!Dead("xxBiff")  
+	!InParty("xxBiff")  
+THEN
+	RESPONSE #100
+		CutSceneId(Player1)
+		SetGlobal("xxBiff_SoDEndMove","bd6200",2)
+		ActionOverride("xxBiff",LeaveAreaLUA("bd6100","",[572.393],SE)) //chose some coordinates beneath the trees northeast of the clearing 
+		SmallWait(10)
+		Continue()
+END
+
+
+
+
