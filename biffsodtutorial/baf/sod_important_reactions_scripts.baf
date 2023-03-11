@@ -4,71 +4,67 @@ In addition, some reactions are also triggered by game events if the Road to Dis
 I made the following assumptions in case Road to Discovery is NOT installed:
 -The PC knows who Hephernaan is after the parley with Caelar at Coastway Crossing (GlobalGT("bd_plot","global",169) ).
 -The PC knows that Caelar wants to free souls from Avernus after the parley at Coastway Crossing (GlobalGT("bd_plot","global",169) ).
--The PC knows that Hephernaan is betraying Caelar if they watched the scry pool scene ( Global("xxBiff_HepherScryPool","GLOBAL",2) ) OR after the actual betrayal ( GlobalGT("bd_plot","global",484) ). I do not check for Hephernaan's mirror scene or what the ghost Daeros tells the group - tracking these kind of instances is why I wrote Road to Discovery.
--The only other source to know about Aun Argent being trapped in Avernus BEFORE meeting him is either a mod setting the Road to Discovery variable or the Stat Based Reactions component from Themed Tweaks. 
+-The PC knows that Hephernaan is betraying Caelar after the actual betrayal ( GlobalGT("bd_plot","global",484) ). To check for Hephernaan's mirror scene or what the ghost Daeros tells the group is what Road to Discovery is for.
+-Only source to know about Aun Argent being trapped in Avernus BEFORE meeting him is either a mod setting the Road to Discovery variable or the Stat Based Reactions component from Themed Tweaks. 
 -The PC will know about Caelar being no Bhaalchild if Caelar told so explicitely at the parley at Coastway Crossing ( BhaalGlobalGT("bd_mdd018","global",0) ).
--The NPC can conclude that Caelar wants to open a portal to Avernus after the parley at Coastway Crossing AND if the group either found the treatise (bdbook11) OR watched Hephernaan in the scry pool scene.
+-The NPC can conclude that Caelar wants to open a portal to Avernus after the parley at Coastway Crossing AND if the group found the treatise (bdbook11).
 -PC will know that Caelar is planning on opening a portal to Avernus after the parley at Dead Man's Pass.
 -The NPC can conclude that Caelar needs the PC's blood if they found the treatise (bdbook11), know that Caelar is no Bhaalchild, and know that she is planning on opening a portal.
 
 The trigger work in the following way:
 -If Road to Discovery is installed (i.e. Global("C#RtD_RoadToDiscovery","GLOBAL",1) ), ONLY the variables of its tracking system should give true.
--If Road to Discovery is not installed (i.e. Global("C#RtD_RoadToDiscovery","GLOBAL",0) ), the ingame triggers listed above should be used OR the variables from RtD's tracking system if they were set by another mod.
+-If Road to Discovery is not installed (i.e. Global("C#RtD_RoadToDiscovery","GLOBAL",0) ), the ingame triggers listed above should be used.
 
 This template has two kind of reactions: CONCLUSIONS and general REACTIONS.
--Conclusions are only for smart NPCs (WIS or INT greater than 15). Uncomment the according script blocks if you think your NPC should make conclusions, nontheless.
+-Conclusions are more like adding 1+1 and giving the player the possibility to update their PC's ingame knowledge to what they might have already deducted behind the screen. Not every NPC might be suited to phrase them, though. Uncomment the according script blocks if you think your NPC should make conclusions.
 
 Dialogues are in "sod_important_reactions_dialogues.d". */
 
 /* CONTENT */
-/* 1. Hephernaan is working for a Fiend/the Umbral: knowledge gained BEFORE the portal scene at Dragonspear basement */
-	/* 1.1 Conclusion that Hephernaan is working for a fiend: after seeing him at Coastway Crossing / knowing who Hephernaan is AND seeing the scry pool scene. */
-	/* 1.2 General reaction to Hephernaan is betraying Caelar: knowledge gained BEFORE the portal scene at Dragonspear basement; PC does NOT know that he is working for a fiend yet. */
-	/* 1.3 General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained BEFORE the portal scene at Dragonspear basement */
+
+/* 1. Hephernaan's own plans */
+	/* 1.1 General reaction to Hephernaan is betraying Caelar: knowledge gained BEFORE the portal scene at Dragonspear basement; PC does NOT know that he is working for a fiend yet. */
+	/* 1.2 General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained BEFORE the portal scene at Dragonspear basement */
+	/* 1.3 General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained AFTER the portal scene at Dragonspear basement */
 
 /* 2. Caelar's ulterior motive is to save her uncle Aun. */
 	/* 2.1 Conclude that Caelar's ulterior motive is to save her uncle: After knowing that she is planning on freeing souls from Avernus AND knowing that Aun went to Avernus for her. */
-	/* 2.2 General reaction to the knowledge that Caelar's only motive was to free her uncle BEFORE meeting Aun. */
-	/* 2.3 General reaction to the knowledge that Caelar's only motive was to free her uncle AFTER meeting Aun. */
+	/* 2.2 General reaction to the knowledge that Caelar's ulterior motive is to free her uncle BEFORE meeting Aun. */
+	/* 2.3 General reaction to the knowledge that Caelar's ulterior motive was to free her uncle AFTER meeting Aun. */
 
 /* 3. Detection: Found treatise "bdbook11": learn about the dormant portal and that godly blood is needed to open it - no specific dialogue attached to this one. */
 
-/* 4. Caelar is no child of Bhaal. */
-	/* 4.1 Conclusion that Caelar is no child of Bhaal: after PC reasons / concludes / speculates that Caelar / Hephernaan want PC's blood for [open portal to Avernus] AND hearing rumors that she is a child of Bhaal (or the portal would already be open / she wouldn't go for the PC.) */
-	/* 4.2 Reaction to the knowledge that Caelar is no Bhaalchild. */
+
+/* 4. Incident at Boareskyr Bridge. */
+	/* 4.1 Quick reaction line: will only show if The Boareskyr Bridge Scene mod is not installed / didn't run. Uses the same line! -> crossmod with TBBS is in the tp2. */
+	/* 4.2 General dialogue after bridge incident. Will run after timer. (True also in case The Boareskyr Bridge Scene mod is installed and the above quick reaction line run.) This follow-up dialogue triggers after timer is run. */
 
 /* 5. Caelar wants to open a portal to Avernus. */
 	/* 5.1 Conclusion that Caelar wants to open a portal to Avernus: if PC knows that Caelar is planning on marching into Avernus AND Hephernaan is working for a fiend. */
 	/* 5.2 Conclusion that Caelar wants to open a portal to Avernus: if PC knows that Caelar is planning on marching into Avernus AND that there is a dormant rift below Dragonspear Castle. */
-/* activation */
 	/* 5.3 Conclusion that Caelar wants to open a portal to Avernus: if PC knows that Caelar is planning on marching into Avernus AND that PC's blood is needed to open portal below Dragonspear Castle. */
-	/* 5.4 General reaction: Caelar wants to open a portal to Avernus. (No reaction to needed blood, PC does not know yet.) BEFORE portal scene at Dragonspear Castle */
+	/* 5.4 General reaction: Caelar wants to open a portal to Avernus. (No reaction to needed blood, PC might not know yet.) BEFORE portal scene at Dragonspear Castle */
 
 /* 6. Caelar wants the PC for something */
 	/* 6.1 Conclusion that Caelar didn't want to kill the PC but only kidnap after hearing about weak poison. */
-	/* 6.2 Reaction after learning that Caelar needs the PC / PC's blood for something but does NOT know any specifics (BEFORE portal scene) */
+	/* 6.2 Reaction after learning that Caelar needs the PC for something / wanted to kidnap the PC but does NOT know any specifics (BEFORE portal scene) */
 
 /* 7. Caelar needs the PC's blood to open the portal. */
 	/* 7.1 Conclusion that Caelar needs the PC's blood to open the portal: if Caelar needs Bhaalblood AND PC knows that she is no Bhaalspawn herself. */
 	/* 7.2 Conclusion that Caelar needs the PC's blood to open the portal: if Caelar needs Bhaalblood AND wanted to kidnap the PC. */
 	/* 7.3 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene): NPC already reacted to Caelar's plans to open a portal. */
 	/* 7.4 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene): NPC did NOT yet react to Caelar's plans to open a portal. */
+	/* 7.5 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (AFTER portal betrayal scene). */
 
 
-/* 8. Reaction to betrayal at the portal */
-/* 8.1. PC knew about PC's blood needed to open the portal BUT didn't suspect anything about Hephernaan's plans */
-/* 8.2 PC knew about Hephernaan's own plans before BUT didn't know about PC's blood needed to open the portal */
-/* 8.3 PC knew about PC's blood needed to open the portal AND about Hephernaan's own plans before */
-
-
-/* 9. Incident at Boareskyr Bridge. */
-	/* 9.1 Quick reaction line: will only show if The Boareskyr Bridge Scene mod is not installed / didn't run. Uses the same line! -> crossmod with TBBS is in the tp2. */
-	/* 9.2 General dialogue after bridge incident. Will run after timer. (True also in case The Boareskyr Bridge Scene mod is installed and the above quick reaction line run.) This follow-up dialogue triggers after timer is run. */
+/* 8. Caelar is no child of Bhaal. */
+	/* 8.1 Conclusion that Caelar is no child of Bhaal: after PC reasons / concludes / speculates that Caelar / Hephernaan want PC's blood for [open portal to Avernus] AND hearing rumors that she is a child of Bhaal (or the portal would already be open / she wouldn't go for the PC.) */
+	/* 8.2 Reaction to the knowledge that Caelar is no Bhaalchild. */
 
 
 
 /* first we set a general dialogue timer. It could also be used to space timered friendship dialogues if Biff would have any. I'll use this here so the reaction dialogues do not all fire right after / at the incidents, which would be a bit annoying. - Timer length might need adjusting, haven't tried it ingame yet. 
-You don't need this if you are already using a dialogue timer and want to use that here, too. */
+You don't need this if you are already using a dialogue timer and want to use that instead. */
 IF
 	InParty("xxBiff")
 	CombatCounter(0)
@@ -80,83 +76,10 @@ THEN
 		SetGlobal("xxBiff_InitDialTimer","LOCALS",1)
 END	
 
-/* 1. Hephernaan is working for a Fiend/the Umbral: knowledge gained BEFORE the portal scene at Dragonspear basement */
+/* 1. Hephernaan's own plans */
 /* GlobalLT("bd_plot","global",485) //before the portal is opened */
 
-/* Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless ##  
-
-
-/* 1.1 Conclusion that Hephernaan is working for a fiend: after seeing him at Coastway Crossing / knowing who Hephernaan is AND seeing the scry pool scene. */
-/* bd1200 dwarven dig site scrying pool - detect whether NPC witnessed the scene with Hephernaan. */
-
-/* Detection: NPC is in area */
-IF
-	InParty("xxBiff")
-	CombatCounter(0)
-	!See([ENEMY])
-	!Dead("xxBiff")
-	AreaCheck("bd1200")
-	Global("xxBiff_HepherScryPool","GLOBAL",0)
-THEN
-	RESPONSE #100
-		SetGlobal("xxBiff_HepherScryPool","GLOBAL",1)
-END
-
-/* reset variable: NPC is not in area or can't watch the scene */
-IF
-	OR(3) 
-		!InParty("xxBiff")
-		Dead("xxBiff")
-		!AreaCheck("bd1200")
-	CombatCounter(0)
-	!See([ENEMY])
-	Global("xxBiff_HepherScryPool","GLOBAL",1)
-THEN
-	RESPONSE #100
-		SetGlobal("xxBiff_HepherScryPool","GLOBAL",0)
-END
-
-/* activation */
-IF
-	InParty("xxBiff")
-	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
-	See(Player1)
-	CombatCounter(0)
-	!See([ENEMY])
-	!StateCheck(Myself,CD_STATE_NOTVALID)
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	OR(2)
-		Global("C#RtD_HephernaanIdentity","GLOBAL",1) //knows who Hephernaan is from RtD
-		Global("C#RtD_RoadToDiscovery","GLOBAL",0) //RtD is not installed
-	OR(3)
-		Global("C#RtD_HephernaanIdentity","GLOBAL",1)
-		GlobalGT("bd_plot","global",169) //after seeing Hephernaan at the parley at Coastway Crossing
-		Global("C#RtD_RoadToDiscovery","GLOBAL",1) //RtD is installed
-//	Global("C#RtD_HephernaanVisual","GLOBAL",1) //scene in scry pool happened. We don't need this because we have NPC specific trigger.
-	GlobalLT("C#RtD_HephernaanFiend","GLOBAL",2) //doesn't know that H. is working for a fiend yet
-	GlobalLT("bd_plot","global",485) //before the portal is opened
-	Global("xxBiff_HepherScryPool","GLOBAL",2) //NPC watched the scene
-THEN 
-	RESPONSE #100
-		SetGlobal("xxBiff_HepherScryPool","GLOBAL",3)
-END
-/* initiation */
-IF
-	InParty("xxBiff")
-	See(Player1)
-	CombatCounter(0)
-	!See([ENEMY])
-	!StateCheck(Myself,CD_STATE_NOTVALID)
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	Global("xxBiff_HepherScryPool","GLOBAL",3)	
-THEN
-	RESPONSE #100
-		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
-		StartDialogNoSet(Player1)
-END
-#### Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless */
-
-/* 1.2 General reaction to Hephernaan is betraying Caelar: knowledge gained BEFORE the portal scene at Dragonspear basement; PC does NOT know that he is working for a fiend yet. */
+/* 1.1 General reaction to Hephernaan is betraying Caelar: knowledge gained BEFORE the portal scene at Dragonspear basement; PC does NOT know that he is working for a fiend yet. */
 /* This will only play with Road to Discovery installed. */
 IF
 /* activation */
@@ -169,8 +92,7 @@ IF
 	!StateCheck(Player1,CD_STATE_NOTVALID)
 	!See("bdcaelar")
 	!See("bdhepher")
-	Global("C#RtD_HephernaanIdentity","GLOBAL",1)
-	GlobalGT("C#RtD_HephernaanBetrayal","GLOBAL",0)
+	Global("C#RtD_HephernaanBetrayal","GLOBAL",2)
 	Global("C#RtD_HephernaanFiend","GLOBAL",0)
 	GlobalLT("bd_plot","global",485) //before portal scene
 	Global("xxBiff_HephernaanBetrayal","GLOBAL",0) 
@@ -193,8 +115,8 @@ THEN
 		StartDialogNoSet(Player1)
 END
 
-/* 1.3 General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained BEFORE the portal scene at Dragonspear basement */
-/* this dialogue only happens if the knowledge is gained through the scry pool scene or other triggers from Road to Discovery because there is no easy trigger inside the game to cover all instances (or I wouldn't have written RtD) */
+/* 1.2 + 1.3 General reaction to the knowledge that Hephernaan is working for a fiend */
+/* this dialogue only happens if the knowledge is gained through triggers from Road to Discovery */
 /* activation */
 IF
 	InParty("xxBiff")
@@ -204,17 +126,7 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	OR(2)
-		Global("C#RtD_HephernaanIdentity","GLOBAL",1)
-		Global("C#RtD_RoadToDiscovery","GLOBAL",0) //RtD is not installed
-	OR(3)
-		Global("C#RtD_HephernaanIdentity","GLOBAL",1)
-		GlobalGT("bd_plot","global",169) //after seeing Hephernaan at the parley at Coastway Crossing
-		Global("C#RtD_RoadToDiscovery","GLOBAL",1) //RtD is installed
-	OR(2)
-		Global("xxBiff_HepherScryPool","GLOBAL",4)
-		GlobalGT("C#RtD_HephernaanFiend","GLOBAL",0)
-	GlobalLT("bd_plot","global",485) //before the portal is opened
+	GlobalGT("C#RtD_HephernaanFiend","GLOBAL",1)
 	Global("xxBiff_HephernaanFiend","GLOBAL",0) 
 THEN 
 	RESPONSE #100
@@ -238,7 +150,8 @@ END
 
 /* 2. Caelar's ulterior motive is to save her uncle Aun. */
 
-/* Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless ##
+
+/* Remove this line if you think your NPC should make this conclusion ##  
 
 /* 2.1 Conclude that Caelar's ulterior motive is to save her uncle: After knowing that she is planning on freeing souls from Avernus and knowing that Aun went to Avernus for her. */
 /* This dialogue makes only sense if it happens before the PC enters Avernus. Only other possibility considered to get information without Road to Discovery is via Themed Tweaks.*/
@@ -252,18 +165,12 @@ IF
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
 	OR(2)
-		Global("C#RtD_HephernaanIdentity","GLOBAL",1)
-		Global("C#RtD_RoadToDiscovery","GLOBAL",0)
-	OR(3)
-		Global("C#RtD_HephernaanIdentity","GLOBAL",1)
-		GlobalGT("bd_plot","global",169) //after seeing Hephernaan at the parley at Coastway Crossing
-		Global("C#RtD_RoadToDiscovery","GLOBAL",1)
-	OR(2)
 		GlobalGT("C#RtD_KnowsAunArgent","GLOBAL",3)
 		Global("#L_SoDStat_DaustonTalk","GLOBAL",3) //from Themed Tweaks
 	GlobalLT("C#RtD_CaelarPlan","GLOBAL",5)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_CaelarPlanAun","GLOBAL",0) 
+	Global("C#SoD_CaelarPlanAun","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_CaelarPlanAun","GLOBAL",1) 
@@ -282,9 +189,9 @@ THEN
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 		StartDialogNoSet(Player1)
 END
-#### Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless */
+#### Remove this line if you think your NPC should make this conclusion */
 
-/* 2.2 General reaction to the knowledge that Caelar's only motive was to free her uncle BEFORE meeting Aun. */
+/* 2.2 General reaction to the knowledge that Caelar's ulterior motive is to free her uncle BEFORE meeting Aun. */
 /* will only happen with Road to Discovery or if PC concluded it themselves */
 /* activation */
 IF
@@ -307,7 +214,7 @@ END
 /* initiation */
 /* same script block as below - same variable is used. */
 
-/* 2.3 General reaction to the knowledge that Caelar's only motive was to free her uncle AFTER meeting Aun. */
+/* 2.3 General reaction to the knowledge that Caelar's ulterior motive was to free her uncle AFTER meeting Aun. */
 /* activation */
 IF
 	InParty("xxBiff")
@@ -356,89 +263,91 @@ THEN
 END
 
 
-/* 4. Caelar is no child of Bhaal. */
 
-/* Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless ##
 
-/* 4.1 Conclusion that Caelar is no child of Bhaal: after PC reasons / concludes / speculates that Caelar / Hephernaan want PC's blood for [open portal to Avernus] AND hearing rumors that she is a child of Bhaal (or the portal would already be open / she wouldn't go for the PC.) */
-/* will only trigger with Road to Discovery because there is no other ingame trigger to check whether the PC heard the rumor. */
+/* 4. Incident at Boareskyr Bridge. */
+
+/* 4.1 Quick reaction line: will only show if The Boareskyr Bridge Scene mod is not installed / didn't run. Uses the same line! -> crossmod with TBBS is in the tp2. */
+/* activation */
+/* no timer here! */
+IF
+	InParty("xxBiff")
+	!StateCheck(Myself,CD_STATE_NOTVALID)
+	!StateCheck(Player1,CD_STATE_NOTVALID)
+	See(Player1)
+	!See([ENEMY])
+	CombatCounter(0)
+	GlobalGT("bd_plot","global",294) //after it happened
+	GlobalLT("chapter","global",10) // not if game went on
+	AreaCheck("bd2000")
+	!InMyArea("bdireni")
+	!InMyArea("bdfist24")
+	Global("xxBiff_c#stff24_10","GLOBAL",0) // no interjection from tbbs
+	Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobal("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",1)
+END
+
+/* initiate */
+IF
+	InParty("xxBiff")
+	!StateCheck(Myself,CD_STATE_NOTVALID)
+	!StateCheck(Player1,CD_STATE_NOTVALID)
+	See(Player1)
+	CombatCounter(0)
+	!See([ENEMY])
+	Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",1)
+THEN
+	RESPONSE #100
+		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600) //we set timer here so there is a space to whichever next dialogue
+		StartDialogNoSet(Player1)
+END
+
+/* 4.2 General dialogue after bridge incident. Will run after timer. (True also in case The Boareskyr Bridge mod is installed and the above quick reaction line didn't run.) This follow-up dialogue triggers after timer is run. */
 /* activation */
 IF
 	InParty("xxBiff")
 	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
+	!StateCheck(Myself,CD_STATE_NOTVALID)
+	!StateCheck(Player1,CD_STATE_NOTVALID)
 	See(Player1)
 	CombatCounter(0)
 	!See([ENEMY])
-	!StateCheck(Myself,CD_STATE_NOTVALID)
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2)
-	Global("C#RtD_CaelarBhaalChild","GLOBAL",1)
-	GlobalLT("bd_plot","global",485) //before the portal is opened
-	Global("xxBiff_CaelarNoBhaalChild","GLOBAL",0) 
+	GlobalGT("bd_plot","global",294) //after it happened
+	OR(2)
+		Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",2) //quick reaction line run
+		Global("xxBiff_c#stff24_10","GLOBAL",1) // interjection from tbbs run
+	GlobalLT("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",3)
 THEN
 	RESPONSE #100
-		SetGlobal("xxBiff_CaelarNoBhaalChild","GLOBAL",1) 
+		SetGlobal("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",3)
 END
-/* initiation */
+/* initiate */
 IF
 	InParty("xxBiff")
+	!StateCheck(Myself,CD_STATE_NOTVALID)
+	!StateCheck(Player1,CD_STATE_NOTVALID)
 	See(Player1)
 	CombatCounter(0)
 	!See([ENEMY])
-	!StateCheck(Myself,CD_STATE_NOTVALID)
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	Global("xxBiff_CaelarNoBhaalChild","GLOBAL",1)	
+	Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",3)
 THEN
 	RESPONSE #100
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 		StartDialogNoSet(Player1)
 END
-#### Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless */
 
-/* 4.2 Reaction to the knowledge that Caelar is no Bhaalchild. */
-/* activation */
-/* without Road to Discovery, this will only trigger if Caelar was asked about it in the Coastway Crossing parley. */
-IF
-	InParty("xxBiff")
-	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
-	See(Player1)
-	CombatCounter(0)
-	!See([ENEMY])
-	!StateCheck(Myself,CD_STATE_NOTVALID)
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	OR(3)
-  		GlobalGT("bd_mdd018","global",0) //Caelar told she is no child of Bhaal
-		GlobalGT("C#RtD_CaelarBhaalChild","GLOBAL",1) //from Road to Discovery
-		Global("xxBiff_CaelarNoBhaalChild","GLOBAL",2)
-	GlobalLT("xxBiff_CaelarNoBhaalChild","GLOBAL",3) 
-THEN
-	RESPONSE #100
-		SetGlobal("xxBiff_CaelarNoBhaalChild","GLOBAL",3) 
-END
-/* initiation */
-IF
-	InParty("xxBiff")
-	See(Player1)
-	CombatCounter(0)
-	!See([ENEMY])
-	!StateCheck(Myself,CD_STATE_NOTVALID)
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	Global("xxBiff_CaelarNoBhaalChild","GLOBAL",2)	
-THEN
-	RESPONSE #100
-		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
-		StartDialogNoSet(Player1)
-END
 
 
 
 
 /* 5. Caelar wants to open a portal to Avernus. */
 
-/* Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless ##
+/* Remove this line if you think your NPC should make this conclusion ##  
 
 /* 5.1 Conclusion that Caelar wants to open a portal to Avernus: if PC knows that Caelar is planning on marching into Avernus AND Hephernaan is working for a fiend. */
-/* without Road to Discovery, this will only happen if NPC witnessed and commented on Scry Pool Scene. */
+/* only with Road to Discovery */
 /* activation */
 IF 
 	InParty("xxBiff")
@@ -448,22 +357,12 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	OR(3)
-		Global("C#RtD_CaelarPlan","GLOBAL",2)
-		Global("C#RtD_CaelarPlan","GLOBAL",3)
-		Global("C#RtD_RoadToDiscovery","GLOBAL",0)
-	OR(4)
-		Global("C#RtD_CaelarPlan","GLOBAL",2)
-		Global("C#RtD_CaelarPlan","GLOBAL",3)
-		GlobalGT("bd_plot","global",169) //after CWC Parley with Caelar
-		Global("C#RtD_RoadToDiscovery","GLOBAL",1)
-	OR(2)
-		GlobalGT("C#RtD_HephernaanFiend","GLOBAL",1)
-		Global("xxBiff_HepherScryPool","GLOBAL",4) //dialogue about scry pool 
-	GlobalLT("C#RtD_CaelarPlan","GLOBAL",4)
+	Global("C#RtD_CaelarPlan","GLOBAL",3)
+	GlobalGT("C#RtD_HephernaanFiend","GLOBAL",1)
 	GlobalLT("C#RtD_CaelarPlan","GLOBAL",4)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_SoD_PortalConclusion","GLOBAL",0)
+	Global("C#SoD_PortalConclusion_1","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_SoD_PortalConclusion","GLOBAL",1) 
@@ -480,8 +379,7 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	OR(3)
-		Global("C#RtD_CaelarPlan","GLOBAL",2)
+	OR(2)
 		Global("C#RtD_CaelarPlan","GLOBAL",3)
 		Global("C#RtD_RoadToDiscovery","GLOBAL",0)
 	OR(2)
@@ -493,6 +391,7 @@ IF
 		Global("xxBiff_SoD_Foundbdbook11","GLOBAL",1)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_SoD_PortalConclusion","GLOBAL",0)
+	Global("C#SoD_PortalConclusion_2","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_SoD_PortalConclusion","GLOBAL",2) 
@@ -500,7 +399,7 @@ END
 /* initiation block see below! */
 
 /* 5.3 Conclusion that Caelar wants to open a portal to Avernus: if PC knows that Caelar is planning on marching into Avernus AND that PC's blood is needed to open portal below Dragonspear Castle. */
-/* only triggers with Road to Discovery */
+/* triggers with Road to Discovery or if NPC conlcuded that Caelar needs PC's blood for portal */
 /* activation */
 IF 
 	InParty("xxBiff")
@@ -510,13 +409,14 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
+	Global("C#RtD_CaelarPlan","GLOBAL",3)
 	OR(2)
-		Global("C#RtD_CaelarPlan","GLOBAL",2)
-		Global("C#RtD_CaelarPlan","GLOBAL",3)
-	GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2)
+		GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2)
+		Global("xxBiff_PortalPCBloodConclusion","GLOBAL",3)
 	GlobalLT("C#RtD_CaelarPlan","GLOBAL",4)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_SoD_PortalConclusion","GLOBAL",0)
+	Global("C#SoD_PortalConclusion_3","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_SoD_PortalConclusion","GLOBAL",3) 
@@ -537,9 +437,9 @@ THEN
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 		StartDialogNoSet(Player1)
 END
-#### Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless */
+#### Remove this line if you think your NPC should make this conclusion */
 
-/* 5.4 General reaction: Caelar wants to open a portal to Avernus. (No reaction to needed blood, PC does not know yet.) BEFORE portal scene at Dragonspear Castle */
+/* 5.4 General reaction: Caelar wants to open a portal to Avernus. (No reaction to needed blood, PC might not know yet.) BEFORE portal scene at Dragonspear Castle */
 /* without Road to Discovery, this will trigger after parley at Dead Man's Pass or if NPC had conclusion himself. */
 /* activation */
 IF
@@ -583,7 +483,7 @@ END
 
 /* 6. Caelar wants the PC for something */
 
-/* Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless ##
+/* Remove this line if you think your NPC should make this conclusion ##  
 
 /* 6.1 Conclusion that Caelar didn't want to kill the PC but only kidnap after hearing about weak poison. */
 /* will only trigger with Road to Discovery */
@@ -597,10 +497,12 @@ IF
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
 	Global("C#RtD_WeakPoison","GLOBAL",1)
+	Global("C#RtD_CaelarWantsPC","GLOBAL",0)
 	Global("C#RtD_CaelarKidnap","GLOBAL",0)
 	Global("#L_SoDStat_WeakPoison","GLOBAL",0)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_SoDKidnapConclusion","GLOBAL",0)
+	Global("C#SoD_KidnapConclusion","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_SoDKidnapConclusion","GLOBAL",1)
@@ -619,7 +521,7 @@ THEN
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 		StartDialogNoSet(Player1)
 END
-#### Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless */
+#### Remove this line if you think your NPC should make this conclusion */
 
 /* 6.2 Reaction after learning that Caelar needs the PC / PC's blood for something but does NOT know any specifics (BEFORE portal scene) */
 /* this only fires with Road to Discovery or if NPC concluded the kidnapping */
@@ -665,7 +567,7 @@ END
 
 /* 7. Caelar needs the PC's blood to open the portal. */
 
-/* Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless ##
+/* Remove this line if you think your NPC should make this conclusion ##  
 
 /* 7.1 Conclusion that Caelar needs the PC's blood to open the portal: if Caelar needs Bhaalblood to open portal AND PC knows that she is no Bhaalspawn herself. */
 /* this can trigger without Road to Discovery if treatise was found and NPC concluded that Caelar wants to open a portal. */
@@ -677,16 +579,12 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	GlobalLT("bd_plot","global",485) //before the portal is opened
 	OR(2)
 		Global("C#RtD_KnowsPortalBlood","GLOBAL",2) 
 		Global("xxBiff_SoD_Foundbdbook11","GLOBAL",1)
 	OR(2)
 		GlobalGT("C#RtD_CaelarBhaalChild","GLOBAL",1)
 		GlobalGT("bd_mdd018","global",0)
-	Global("C#RtD_WantBhaalBlood","GLOBAL",0)
-	Global("C#RtD_CaelarKidnap","GLOBAL",0)
-	!GlobalGT("C#RtD_CaelarWantsPC","GLOBAL",1)
 	OR(2)
 		GlobalGT("C#RtD_CaelarPlan","GLOBAL",3)
 		Global("C#RtD_RoadToDiscovery","GLOBAL",0)
@@ -694,9 +592,11 @@ IF
 		GlobalGT("C#RtD_CaelarPlan","GLOBAL",3)
 		Global("xxBiff_SoD_PortalConclusion","GLOBAL",4)
 		Global("C#RtD_RoadToDiscovery","GLOBAL",1)
+	GlobalLT("C#RtD_WantBhaalBlood","GLOBAL",2)
 	GlobalLT("C#RtD_KnowsPortalBlood","GLOBAL",3)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_PortalPCBloodConclusion","GLOBAL",0)
+	Global("C#SoD_PortalPCBloodConclusion_1","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_PortalPCBloodConclusion","GLOBAL",1)
@@ -716,6 +616,11 @@ THEN
 		StartDialogNoSet(Player1)
 END
 
+#### Remove this line if you think your NPC should make this conclusion */
+
+
+/* Remove this line if you think your NPC should make this conclusion ##  
+
 /* 7.2 Conclusion that Caelar needs the PC's blood to open the portal: if Caelar needs Bhaalblood AND wanted to kidnap the PC. */
 /* will only trigger with Road to Discovery variables. */
 /* activation */
@@ -727,7 +632,6 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	GlobalLT("bd_plot","global",485) //before the portal is opened
 	OR(2)
 		Global("C#RtD_KnowsPortalBlood","GLOBAL",2) 
 		Global("xxBiff_SoD_Foundbdbook11","GLOBAL",1)
@@ -737,14 +641,11 @@ IF
 		GlobalGT("C#RtD_CaelarWantsPC","GLOBAL",1)
 	OR(2)
 		GlobalGT("C#RtD_CaelarPlan","GLOBAL",3)
-		Global("C#RtD_RoadToDiscovery","GLOBAL",0)
-	OR(3)
-		GlobalGT("C#RtD_CaelarPlan","GLOBAL",3)
 		Global("xxBiff_SoD_PortalConclusion","GLOBAL",4)
-		Global("C#RtD_RoadToDiscovery","GLOBAL",1)
 	GlobalLT("C#RtD_KnowsPortalBlood","GLOBAL",3)
 	GlobalLT("bd_plot","global",485) //before the portal is opened
 	Global("xxBiff_PortalPCBloodConclusion","GLOBAL",0)
+	Global("C#SoD_PortalPCBloodConclusion_2","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_PortalPCBloodConclusion","GLOBAL",2)
@@ -763,9 +664,10 @@ THEN
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 		StartDialogNoSet(Player1)
 END
-#### Conclusions are only for smart NPCs. Remove this line if you think your NPC should notice nontheless */
+#### Remove this line if you think your NPC should make this conclusion */
 
-/* 7.3 + 7.4 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene). */
+/* 7.3 + 7.4 + 7.5 General reaction to the knowledge that Caelar needs the PC's blood to open the portal. */
+/* activation */
 IF
 	InParty("xxBiff")
 	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
@@ -777,7 +679,6 @@ IF
 	OR(2)
 		GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2) //from Road to Discovery
 		Global("xxBiff_PortalPCBloodConclusion","GLOBAL",3)
-	GlobalLT("bd_plot","global",485) //not after Heph's betrayal
 	Global("xxBiff_PortalPCBlood","GLOBAL",0)
 THEN
 	RESPONSE #100
@@ -799,26 +700,31 @@ THEN
 END
 
 
-/* 8. Reaction to betrayal at the portal */
-/* 8.1. PC knew about PC's blood needed to open the portal BUT didn't suspect anything about Hephernaan's plans */
-/* 8.2 PC knew about Hephernaan's own plans before BUT didn't know about PC's blood needed to open the portal */
-/* 8.3 PC knew about PC's blood needed to open the portal AND about Hephernaan's own plans before */
 
-/* one trigger block for reaction. Specifics will be handeled via the d-file! */
+
+/* 8. Caelar is no child of Bhaal. */
+
+/* Remove this line if you think your NPC should make this conclusion ##  
+
+/* 8.1 Conclusion that Caelar is no child of Bhaal: after PC reasons / concludes / speculates that Caelar / Hephernaan want PC's blood for [open portal to Avernus] AND hearing rumors that she is a child of Bhaal (or the portal would already be open / she wouldn't go for the PC.) */
+/* will only trigger with Road to Discovery because there is no other ingame trigger to check whether the PC heard the rumor. */
 /* activation */
 IF
 	InParty("xxBiff")
+	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
+	See(Player1)
+	CombatCounter(0)
 	!See([ENEMY])
-	See(Player1) 
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	CombatCounter(0)
-	!InMyArea("bdcaelar")
-	GlobalGT("bd_plot","global",484) //AFTER Heph's betrayal
-	Global("xxBiff_SoDPortalScene","GLOBAL",0)
+	GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2)
+	Global("C#RtD_CaelarBhaalChild","GLOBAL",1)
+	GlobalLT("bd_plot","global",485) //before the portal is opened
+	Global("xxBiff_CaelarNoBhaalChild","GLOBAL",0) 
+	Global("C#SoD_CaelarNoBhaalChild","GLOBAL",0) // no other NPC offered this conclusion yet. Leave this in!
 THEN
 	RESPONSE #100
-		SetGlobal("xxBiff_SoDPortalScene","GLOBAL",1)
+		SetGlobal("xxBiff_CaelarNoBhaalChild","GLOBAL",1) 
 END
 /* initiation */
 IF
@@ -828,77 +734,43 @@ IF
 	!See([ENEMY])
 	!StateCheck(Myself,CD_STATE_NOTVALID)
 	!StateCheck(Player1,CD_STATE_NOTVALID)
-	Global("xxBiff_SoDPortalScene","GLOBAL",1)	
+	Global("xxBiff_CaelarNoBhaalChild","GLOBAL",1)	
 THEN
 	RESPONSE #100
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 		StartDialogNoSet(Player1)
 END
+#### Remove this line if you think your NPC should make this conclusion */
 
-
-/* 9. Incident at Boareskyr Bridge. */
-
-/* 9.1 Quick reaction line: will only show if The Boareskyr Bridge Scene mod is not installed / didn't run. Uses the same line! -> crossmod with TBBS is in the tp2. */
+/* 8.2 Reaction to the knowledge that Caelar is no Bhaalchild. */
 /* activation */
-/* no timer here! */
-IF
-	InParty("xxBiff")
-	!See([ENEMY])
-	See(Player1) 
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	CombatCounter(0)
-	GlobalGT("bd_plot","global",294) //after it happened
-	GlobalLT("chapter","global",10) // not if game went on
-	AreaCheck("bd2000")
-	!InMyArea("bdireni")
-	!InMyArea("bdfist24")
-	Global("xxBiff_c#stff24_10","GLOBAL",0) // no interjection from tbbs
-	Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",0)
-THEN
-	RESPONSE #100
-		SetGlobal("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",1)
-END
-
-/* initiate */
-IF
-	InParty("xxBiff")
-	!See([ENEMY])
-	See(Player1) 
-	!StateCheck(Player1,CD_STATE_NOTVALID)
-	CombatCounter(0)
-	Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",1)
-THEN
-	RESPONSE #100
-		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600) //we set timer here so there is a space to whichever next dialogue
-		StartDialogNoSet(Player1)
-END
-
-/* 9.2 General dialogue after bridge incident. Will run after timer. (True also in case The Boareskyr Bridge mod is installed and the above quick reaction line didn't run.) This follow-up dialogue triggers after timer is run. */
-/* activation */
+/* without Road to Discovery, this will only trigger if Caelar was asked about it in the Coastway Crossing parley. */
 IF
 	InParty("xxBiff")
 	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
-	!See([ENEMY])
-	See(Player1) 
-	!StateCheck(Player1,CD_STATE_NOTVALID)
+	See(Player1)
 	CombatCounter(0)
-	GlobalGT("bd_plot","global",294) //after it happened
-	OR(2)
-		Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",2) //quick reaction line run
-		Global("xxBiff_c#stff24_10","GLOBAL",1) // interjection from tbbs run
-	GlobalLT("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",3)
+	!See([ENEMY])
+	!StateCheck(Myself,CD_STATE_NOTVALID)
+	!StateCheck(Player1,CD_STATE_NOTVALID)
+	OR(3)
+  		GlobalGT("bd_mdd018","global",0) //Caelar told she is no child of Bhaal
+		GlobalGT("C#RtD_CaelarBhaalChild","GLOBAL",1) //from Road to Discovery
+		Global("xxBiff_CaelarNoBhaalChild","GLOBAL",2)
+	GlobalLT("xxBiff_CaelarNoBhaalChild","GLOBAL",3) 
 THEN
 	RESPONSE #100
-		SetGlobal("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",3)
+		SetGlobal("xxBiff_CaelarNoBhaalChild","GLOBAL",3) 
 END
-/* initiate */
+/* initiation */
 IF
 	InParty("xxBiff")
-	!See([ENEMY])
-	See(Player1) 
-	!StateCheck(Player1,CD_STATE_NOTVALID)
+	See(Player1)
 	CombatCounter(0)
-	Global("xxBiff_SoDBoareskyrBridgeScene","GLOBAL",3)
+	!See([ENEMY])
+	!StateCheck(Myself,CD_STATE_NOTVALID)
+	!StateCheck(Player1,CD_STATE_NOTVALID)
+	Global("xxBiff_CaelarNoBhaalChild","GLOBAL",3)	
 THEN
 	RESPONSE #100
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)

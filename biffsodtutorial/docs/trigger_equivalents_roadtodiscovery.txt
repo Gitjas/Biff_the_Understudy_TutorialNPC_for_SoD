@@ -1,21 +1,21 @@
+List of variables from Road To Discovery == ingame variables / variables from NPC mod that could be used in case rtD is not installed:
+
 Global("C#RtD_HephernaanIdentity","GLOBAL",1) //knows who Hephernaan is from RtD
 == GlobalGT("bd_plot","global",169) //after seeing Hephernaan at the parley at Coastway Crossing
 
-Global("C#RtD_HephernaanVisual","GLOBAL",1) //scene in scry pool 
+Global("C#RtD_HephernaanVisual","GLOBAL",1) //scene in scry pool; Umbral Accord mentioned
 == Global("xxBiff_HepherScryPool","GLOBAL",2) //NPC watched the scry pool scene
-[OR ## //PC watched Hephernaan talking to his mirror]
-OR GlobalGT("bd_plot","global",484) //after Hephernaan's betrayal <- is AFTER it happened.
+
 
 Global("C#RtD_HephernaanFiend","GLOBAL",1) //knows that a man called Hephernaan is working for a fiend
-OR GlobalGT("C#RtD_HephernaanBetrayal","GLOBAL",0)
-== Global("xxBiff_HepherScryPool","GLOBAL",4) //dialogue about scry pool scene happened
+== GlobalGT("bd_plot","global",484) //after Hephernaan's betrayal <- is AFTER it happened.
 
 
 GlobalGT("C#RtD_CaelarPlan","GLOBAL",1) 
 GlobalLT("C#RtD_CaelarPlan","GLOBAL",5)
-GlobalGT("C#RtD_KnowsAunArgent","GLOBAL",3) <- might be set by other mods, e.g. Husam -> without _SET?!
+GlobalGT("C#RtD_KnowsAunArgent","GLOBAL",3) 
 == Global("#L_SoDStat_DaustonTalk","GLOBAL",3) // from Themed Tweaks.
-== NO ingame trigger without RtD / TT.
+-> NO ingame trigger without RtD / TT.
 
 
 Global("C#RtD_KnowsPortalBlood","GLOBAL",2) //knows about portal under DC and that it opens using godly / the PC's blood.

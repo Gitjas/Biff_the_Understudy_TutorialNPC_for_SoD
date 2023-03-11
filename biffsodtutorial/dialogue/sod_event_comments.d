@@ -1,9 +1,12 @@
 /* This file contains Biff's dialogues and other dialogue additions */
 BEGIN xxBiffJ //we need to define the dlg somewhere. In this mod, this is the first place to do so.
 
-/* (T1) This goes into a .d file: Make Corwin mention Biff's whereabouts in BG city */
+/* (T1) This goes into a .d file: Make Corwin mention Biff's whereabouts in BG city (new game or in case the NPC was in party in BG1) */
 I_C_T bdschael 39 xxBiff_bdschael_39
-== bdschael IF ~!Dead("xxBiff") !InPartyAllowDead("xxBiff") BeenInParty("xxBiff")~ THEN ~Also, Biff the Understudy was seen right in front of the Ducal Palace's gates not long ago.~
+== bdschael IF ~!Dead("xxBiff") !InPartyAllowDead("xxBiff") 
+OR(2)
+	BeenInParty("xxBiff")
+	Global("SOD_fromimport","GLOBAL",0)~ THEN ~Also, Biff the Understudy was seen right in front of the Ducal Palace's gates not long ago.~
 END
 
 /* (T3) PC threatens to kill the crusaders with the spikes in bd7230.are */
@@ -17,7 +20,7 @@ I_C_T BDKHALIJ 33 xxBiff_betrayal_discussion //"xxBiff_betrayal_discussion" is t
 END
 
 /* (T3) The Chicken, the Well, and the Dog Easter Egg */
-I_C_T BDDOGW01 0 C#BE_BDDOGW01_0
+I_C_T3 BDDOGW01 0 C#BE_BDDOGW01_0
 == xxBiffJ IF ~IfValidForPartyDialogue("xxBiff")~ THEN ~We washed the chicken in the well and the dog came to collect it. Never gets old!~
 == BDDOGW01 IF ~IfValidForPartyDialogue("xxBiff")
 OR(2) IsValidForPartyDialogue("KHALID")

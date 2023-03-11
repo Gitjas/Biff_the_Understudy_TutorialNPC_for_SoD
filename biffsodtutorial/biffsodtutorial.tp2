@@ -12,7 +12,7 @@ BACKUP ~Biffsodtutorial/backup~ //put the mod folder name here, for the rest of 
 
 AUTHOR ~https://www.gibberlings3.net/forums/topic/30139-jasteys-sod-npc-modding-tutorials/~ //The info given here will be shown if the install fails with the note to send the DEBUG here for helfile p. Put here wherever you want the player to seek your help in case the installation fails. I used to give my email address but switched to giving a forum link as it has several advantages.
 
-VERSION ~5~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
+VERSION ~6~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
 
 README ~%MOD_FOLDER%/readme.Biff.%LANGUAGE%.txt~ //The file specified here will be called after the language call, but before the installation of the mod. Can also be html.
 
@@ -192,8 +192,9 @@ EXTEND_BOTTOM ~xxBiffs.bcs~ ~%MOD_FOLDER%/baf/sod_important_reactions_scripts.ba
 EXTEND_BOTTOM ~xxBiffs.bcs~ ~%MOD_FOLDER%/baf/general_script_additions.baf~
   EVALUATE_BUFFER	
 
-/* empty Timer setting. Needs to be last after any script blocks to Biff's OVERRIDE script so it doesn't block any timered dialogues! */
+/* Timer resetting. Needs to be last after any script blocks to Biff's OVERRIDE script so it doesn't block any timered dialogues! */
 /* add general resetting of the dialogue space timer (timer so dialogues and comments do not fire directly after each other) */
+/* randomaised so it's not always the same NPC giving conclusions! */
 /* this needs to be after any script blocks that use this timer */
 
 <<<<<<<< ...inlined/xxBiffs_timer.baf
@@ -206,7 +207,13 @@ IF
 	ActionListEmpty()
 	!RealGlobalTimerNotExpired("xxBiff_DialogReactionTimer","GLOBAL")
 THEN
-	RESPONSE #100
+	RESPONSE #25
+		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
+	RESPONSE #25
+		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",800)
+	RESPONSE #25
+		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",1000)
+	RESPONSE #25
 		RealSetGlobalTimer("xxBiff_DialogReactionTimer","GLOBAL",600)
 END	
 >>>>>>>>

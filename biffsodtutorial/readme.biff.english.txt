@@ -1,6 +1,6 @@
 			Biff the Understudy - Tutorial NPC for SoD 
 					by jastey 
-					Version 5
+					Version 6
 
 
 This mod is meant as a tutorial for modders how to script the basic structure needed for an SoD NPC.
@@ -116,6 +116,9 @@ This mod is not developed, supported, or endorsed by BioWare, Black Isle Studios
 
 
 HISTORY
+
+Version 6
+-Integrated script and dialogue templates for using Road to Discovery's trigger variable system for reactions to the main story elements.
 
 Version 5
 -Updated the mod to the Tutorial updates: Tutorial 1 v9, Tutorial 2 v8, Tutorial 3 v4, Tutorial 4 v4. Please note: The mod was revised and updated according to the changes in the tutorials. Filenames, details and specifics have changed at various places!
