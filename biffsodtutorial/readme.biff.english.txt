@@ -1,6 +1,5 @@
 			Biff the Understudy - Tutorial NPC for SoD 
 					by jastey 
-					Version 6
 
 
 This mod is meant as a tutorial for modders how to script the basic structure needed for an SoD NPC.
