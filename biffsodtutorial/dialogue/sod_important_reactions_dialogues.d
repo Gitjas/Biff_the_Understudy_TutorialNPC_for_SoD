@@ -1,4 +1,6 @@
 /* Dialogues as triggered in sod_important_reactions_scripts.baf */
+/* Description please see there. */
+
 
 APPEND xxBiffJ
 
@@ -11,18 +13,8 @@ IF ~~ THEN DO ~SetGlobal("xxBiff_HephernaanBetrayal","GLOBAL",2)~ EXIT
 END
 
 /* 1.2 General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained BEFORE the portal scene at Dragonspear basement */
-IF ~Global("xxBiff_HephernaanFiend","GLOBAL",1)
-GlobalLT("bd_plot","global",485) //before the portal is opened
-~ THEN hephernaan_working_for_fiend
+IF ~Global("xxBiff_HephernaanFiend","GLOBAL",1)~ THEN hephernaan_working_for_fiend
 SAY ~(General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained BEFORE the portal scene at Dragonspear basement.)~
-IF ~~ THEN DO ~SetGlobal("xxBiff_HephernaanFiend","GLOBAL",2)~ EXIT
-END
-
-/* 1.3 General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained AFTER the portal scene at Dragonspear basement */
-IF ~Global("xxBiff_HephernaanFiend","GLOBAL",1)
-GlobalGT("bd_plot","global",484) //after the portal is opened
-~ THEN hephernaan_working_for_fiend_2
-SAY ~(General reaction to the knowledge that Hephernaan is working for a fiend: knowledge gained AFTER the portal scene at Dragonspear basement.)~
 IF ~~ THEN DO ~SetGlobal("xxBiff_HephernaanFiend","GLOBAL",2)~ EXIT
 END
 
@@ -60,16 +52,8 @@ SetGlobal("C#SoD_CaelarPlanAun","GLOBAL",1) //cross-mod variable: prevent other 
 END
 
 /* 2.2 General reaction to the knowledge that Caelar's ulterior motive is to free her uncle BEFORE meeting Aun. */
-IF ~Global("xxBiff_AllForAun","GLOBAL",1)
-GlobalLT("bd_plot","global",485)~ THEN all_for_aun
+IF ~Global("xxBiff_AllForAun","GLOBAL",1)~ THEN all_for_aun
 SAY ~(General reaction to the knowledge that Caelar's ulterior motive is to free her uncle BEFORE meeting Aun.)~
-IF ~~ THEN DO ~SetGlobal("xxBiff_AllForAun","GLOBAL",2)~ EXIT
-END
-
-/* 2.3 General reaction to the knowledge that Caelar's ulterior motive was to free her uncle AFTER meeting Aun. */
-IF ~Global("xxBiff_AllForAun","GLOBAL",1)
-GlobalGT("bd_plot","global",564)~ THEN all_for_aun_2
-SAY ~(General reaction to the knowledge that Caelar's ulterior motive was to free her uncle AFTER meeting Aun.)~
 IF ~~ THEN DO ~SetGlobal("xxBiff_AllForAun","GLOBAL",2)~ EXIT
 END
 
@@ -242,9 +226,7 @@ END
 /* 7.3 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene): NPC already reacted to Caelar's plans to open a portal. */
 /* Knowledge is gained before Hephernaan's betrayal/going to Avernus */
 IF ~Global("xxBiff_PortalPCBlood","GLOBAL",1)
-Global("xxBiff_PortalAvernus","GLOBAL",2)
-GlobalLT("bd_plot","global",485) //not after Heph's betrayal
-~ THEN portal_needs_pc_blood
+Global("xxBiff_PortalAvernus","GLOBAL",2)~ THEN portal_needs_pc_blood
 SAY ~(General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene): NPC already reacted to Caelar's plans to open a portal.)~
 IF ~~ THEN DO ~SetGlobal("xxBiff_PortalPCBlood","GLOBAL",2)~ EXIT
 END
@@ -252,20 +234,8 @@ END
 /* 7.4 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene): NPC did NOT yet react to Caelar's plans to open a portal. */
 /* Knowledge is gained before Hephernaan's betrayal/going to Avernus */
 IF ~Global("xxBiff_PortalPCBlood","GLOBAL",1)
-GlobalLT("xxBiff_PortalAvernus","GLOBAL",2)
-GlobalLT("bd_plot","global",485) //not after Heph's betrayal
-~ THEN portal_needs_pc_blood_2
+GlobalLT("xxBiff_PortalAvernus","GLOBAL",2)~ THEN portal_needs_pc_blood_2
 SAY ~(General reaction to the knowledge that Caelar needs the PC's blood to open the portal (BEFORE portal betrayal scene): NPC did NOT yet react to Caelar's plans to open a portal.)~
-IF ~~ THEN DO ~SetGlobal("xxBiff_PortalPCBlood","GLOBAL",2)
-SetGlobal("xxBiff_PortalAvernus","GLOBAL",2)~ EXIT
-END
-
-/* 7.5 General reaction to the knowledge that Caelar needs the PC's blood to open the portal (AFTER portal betrayal scene). */
-IF ~Global("xxBiff_PortalPCBlood","GLOBAL",1)
-GlobalLT("xxBiff_PortalAvernus","GLOBAL",2)
-GlobalGT("bd_plot","global",484) //after Heph's betrayal
-~ THEN portal_needs_pc_blood_3
-SAY ~(General reaction to the knowledge that Caelar needs the PC's blood to open the portal (AFTER portal betrayal scene).)~
 IF ~~ THEN DO ~SetGlobal("xxBiff_PortalPCBlood","GLOBAL",2)
 SetGlobal("xxBiff_PortalAvernus","GLOBAL",2)~ EXIT
 END
@@ -312,7 +282,7 @@ END
 END //APPEND
 
 
-/* 9. Reaction to betrayal at the portal */
+/* 9. Reaction to betrayal at the portal (only dialogue, no script blocks connected) */
 
 /* IF ~~ THEN BEGIN 16 // from:
   SAY #38474 /* ~You'll find out soon enough, my puppet, once the devils begin their march into this world. Bleed, Bhaalspawn. Bleed for my master.~ [BD38474] */
@@ -327,7 +297,7 @@ I_C_T3 BDHEPHER 16 xxBiff_SoDPortalScene
 GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2)
 Global("C#RtD_HephernaanBetrayal","GLOBAL",0)
 Global("C#RtD_HephernaanFiend","GLOBAL",0)~ THEN ~(PC knew about PC's blood needed to open the portal BUT didn't suspect anything about Hephernaan's plans).)~
-/* 8.2 PC knew about Hephernaan's own plans before BUT didn't know about PC's blood needed to open the portal */
+/* 9.2 PC knew about Hephernaan's own plans before BUT didn't know about PC's blood needed to open the portal */
 == xxBiffJ IF ~IsValidForPartyDialogue("xxBiff")
 GlobalLT("C#RtD_KnowsPortalBlood","GLOBAL",3)
 OR(2)
@@ -339,10 +309,27 @@ GlobalGT("C#RtD_KnowsPortalBlood","GLOBAL",2)
 OR(2)
 	GlobalGT("C#RtD_HephernaanBetrayal","GLOBAL",0)
 	GlobalGT("C#RtD_HephernaanFiend","GLOBAL",0)~ THEN ~(PC knew about PC's blood needed to open the portal AND about Hephernaan's own plans before).)~
-/* 8.4 PC didn't suspect anything (didn't know about Hephernaan's plans AND didn't know about PC's blood needed to open the portal) */
+/* 9.4 PC didn't suspect anything (didn't know about Hephernaan's plans AND didn't know about PC's blood needed to open the portal) */
 == xxBiffJ IF ~IsValidForPartyDialogue("xxBiff")
 GlobalLT("C#RtD_KnowsPortalBlood","GLOBAL",3)
 Global("C#RtD_HephernaanBetrayal","GLOBAL",0)
 Global("C#RtD_HephernaanFiend","GLOBAL",0)~ THEN ~(PC didn't suspect anything (didn't know about Hephernaan's plans AND didn't know about PC's blood needed to open the portal).)~
 END
+
+
+/* 10. Final interjection after return from Avernus into Torsin de Lancie's dialogue (only dialogue, no script blocks connected). */
+I_C_T BDDELANC 79 xxBiff_BDDELANC_79
+== xxBiffJ IF ~IsValidForPartyDialogue("xxBiff")~ THEN ~(Final interjection after return from Avernus into Torsin de Lancie's dialogue.)~
+END
+
+
+/* 11. Final campaign dialogue after returning from Avernus and crusade is defeated */ 
+APPEND xxBiffJ
+
+IF ~Global("xxBiff_SoDEnd","GLOBAL",1)~ THEN final_dialogue
+SAY ~(Final campaign dialogue after returning from Avernus and crusade is defeated.)~
+IF ~~ THEN DO ~SetGlobal("xxBiff_SoDEnd","GLOBAL",2)~ EXIT
+END
+
+END //APPEND
 

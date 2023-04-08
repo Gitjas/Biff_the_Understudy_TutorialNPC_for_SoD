@@ -12,7 +12,7 @@ BACKUP ~Biffsodtutorial/backup~ //put the mod folder name here, for the rest of 
 
 AUTHOR ~https://www.gibberlings3.net/forums/topic/30139-jasteys-sod-npc-modding-tutorials/~ //The info given here will be shown if the install fails with the note to send the DEBUG here for helfile p. Put here wherever you want the player to seek your help in case the installation fails. I used to give my email address but switched to giving a forum link as it has several advantages.
 
-VERSION ~6~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
+VERSION ~7~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
 
 README ~%MOD_FOLDER%/readme.Biff.%LANGUAGE%.txt~ //The file specified here will be called after the language call, but before the installation of the mod. Can also be html.
 
@@ -348,7 +348,7 @@ EXTEND_BOTTOM ~bd4400.bcs~ ~%MOD_FOLDER%/baf/bd4400_commenting.baf~
 EVALUATE_BUFFER
 
 /* (T3) Comment in the Avernus Elevator */
-EXTEND_TOP ~bd4601.bcs~ ~%MOD_FOLDER%/baf/bd4601_commenting_et.baf~
+EXTEND_BOTTOM ~bd4601.bcs~ ~%MOD_FOLDER%/baf/bd4601_commenting.baf~
 EVALUATE_BUFFER
 
 /* (T3) Comment before entering the Cave with the blind Wyrmlings (bd5100aw.bcs) */

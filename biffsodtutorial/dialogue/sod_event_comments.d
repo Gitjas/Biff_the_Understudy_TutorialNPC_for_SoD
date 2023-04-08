@@ -20,11 +20,9 @@ I_C_T BDKHALIJ 33 xxBiff_betrayal_discussion //"xxBiff_betrayal_discussion" is t
 END
 
 /* (T3) The Chicken, the Well, and the Dog Easter Egg */
-I_C_T3 BDDOGW01 0 C#BE_BDDOGW01_0
+I_C_T BDDOGW01 7 C#BE_BDDOGW01_7
 == xxBiffJ IF ~IfValidForPartyDialogue("xxBiff")~ THEN ~We washed the chicken in the well and the dog came to collect it. Never gets old!~
-== BDDOGW01 IF ~IfValidForPartyDialogue("xxBiff")
-OR(2) IsValidForPartyDialogue("KHALID")
-IsValidForPartyDialogue("JAHEIRA")~ THEN ~Woof!~
+== BDDOGW01 IF ~IfValidForPartyDialogue("xxBiff")~ THEN ~Woof!~
 END
 
 /* (T3) Training the Recruits in the Coalition Camp */

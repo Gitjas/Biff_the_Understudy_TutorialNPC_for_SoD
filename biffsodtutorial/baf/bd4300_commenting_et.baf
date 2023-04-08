@@ -10,20 +10,21 @@ THEN
 	RESPONSE #100
 		SetGlobalTimer("bd_mdd905a_ot_timer","bd4300",THREE_MINUTES)  
 		SetGlobal("xxBiff_bd_ot","bd4300",1)  
-		DisplayStringHead("xxBiff",~We should leave, like, now.~)  
+		DisplayStringHead("xxBiff",~We should leave, like, now.~) 
 		Continue()  
 END
 
 /* 2 Portal is opened after Hephernaan's scheme */
 IF
 	AreaCheck("BD4300")
-	Global("bd_plot","bd4300",495)
+	Global("bd_plot","global",495)
 	Global("xxBiff_SoDPortalComment","bd4300",0) 
 	IfValidForPartyDialog("xxBiff")  
 THEN
 	RESPONSE #100
 		SetGlobal("xxBiff_SoDPortalComment","bd4300",1)
 		DisplayStringHead("xxBiff",~Ouch, I don't like this part. Does it hurt, <CHARNAME>?~)  
+		SmallWait(8)
 		Continue()
 END
 
@@ -45,13 +46,15 @@ END
 
 /* 4 Comment after first wave of demons if PC lingers */
 IF
+	GlobalLT("bd_plot","global",499)
 	Global("bd_mdd1290d_ot","bd4300",1)  
 	Global("xxBiff_bd_mdd1290d_ot","bd4300",0)  
 	IfValidForPartyDialog("xxBiff")  
 THEN
 	RESPONSE #100
 		DisplayStringHead("xxBiff",~So many demons! Well, I guess that's no wonder considering there is an open portal to Avernus.~)  
-		SetGlobal("xxBiff_bd_mdd1290d_ot","bd4300",1)    
+		SetGlobal("xxBiff_bd_mdd1290d_ot","bd4300",1)  
+		SmallWait(8)  
 		Continue()
 END
 

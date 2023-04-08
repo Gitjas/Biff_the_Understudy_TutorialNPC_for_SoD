@@ -1,5 +1,6 @@
 			Biff the Understudy - Tutorial NPC for SoD 
 					by jastey 
+					Version 7
 
 
 This mod is meant as a tutorial for modders how to script the basic structure needed for an SoD NPC.
@@ -24,6 +25,11 @@ Modding Tutorial Part 4: How to Script the SoD Banter System for Your NPC, versi
 https://gibberlings3.github.io/modding-resources/Tutorial_SoDBanterSystem.html
 
 The mod is not fully traify-ed yet, meaning that all texts for Biff's actual ingame dialogues and comments via scripts are still inside the d- and baf-files, which so far make translations impossible. For tutorial on how to work with d/tra pairs please refer to Kulyok's NPC Tutorial 1-day mod NPC "Branwen" at Pocket Plane Group: https://www.pocketplane.net/one-day-npcs/
+
+In addition to the tutorials' contents, there is more reactions in "sod_important_reactions_scripts.baf" and "sod_important_reactions_dialogues.d".
+The dialogues there are not listed in a tutorial, and most depend on the mod Road to Discovery (component 2: "Main Component: Tracking System") to be installed for them to trigger. 
+They will flesh out the NPC and their reactions to the main story events *in addition* to what the SoD NPCs react to in general (i.e. all that is not covered by the tutorials). 
+The there listed dialogue possibilities are only suggestions. Use them, adapt them, or leave them out depending on your NPC's character and interests. Trying to use all of them might lead to your NPC sounding like a generic know-it-all.
 
 INSTALLATION
 
@@ -115,6 +121,10 @@ This mod is not developed, supported, or endorsed by BioWare, Black Isle Studios
 
 
 HISTORY
+
+Version 7
+-Optimized script and dialogue templates for using Road to Discovery's trigger variable system for reactions to the main story elements.
+-The mod tempate is now alphatested with regard to general bugs, triggers, and appropriate timers.
 
 Version 6
 -Integrated script and dialogue templates for using Road to Discovery's trigger variable system for reactions to the main story elements.

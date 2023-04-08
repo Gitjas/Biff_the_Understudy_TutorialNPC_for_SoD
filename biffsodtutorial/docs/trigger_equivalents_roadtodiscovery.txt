@@ -8,7 +8,7 @@ Global("C#RtD_HephernaanVisual","GLOBAL",1) //scene in scry pool; Umbral Accord 
 
 
 Global("C#RtD_HephernaanFiend","GLOBAL",1) //knows that a man called Hephernaan is working for a fiend
-== GlobalGT("bd_plot","global",484) //after Hephernaan's betrayal <- is AFTER it happened.
+== GlobalGT("bd_plot","global",494) //after Hephernaan's betrayal <- is AFTER it happened.
 
 
 GlobalGT("C#RtD_CaelarPlan","GLOBAL",1) 

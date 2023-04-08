@@ -2,6 +2,7 @@
 ACTION_IF FILE_EXISTS_IN_GAME ~c#afh3.bcs~ THEN BEGIN
   PRINT ~Another Fine Hell detected~ 
 
+/* ## remove this line if your NPC should be with the PC for the kidnapping scene
 /* If your NPC is treated as default and should just stay in the group: patch check variable for Another fine Hell to their leaving in bdcut61.bcs */
 COPY_EXISTING ~bdcut61.bcs~ ~override~
 	DECOMPILE_AND_PATCH BEGIN
@@ -16,6 +17,7 @@ Global("C#AfHSoD_RevisedEnd","GLOBAL",0)~
 		END
 	END
 BUT_ONLY 
+## remove this line if your NPC should be with the PC for the kidnapping scene */
 
 /* get state number for c#afhblt to add your NPC's comment after Duke Belt announced that the PC will have to leave the town:
 @77 = [Duke Belt]Sort your equipment and rest once again. Tomorrow morning we will take you out of the city unnoticed. */
@@ -24,7 +26,7 @@ BUT_ONLY
 /* add interjection for NPC into Duke Belt's dialogue */
 <<<<<<<< .../add_xxbiff_afh_interjection.d
 I_C_T c#afhblt %belt_interjection% xxBiff_c#afhblt_77
-== xxBiffJ IF ~InParty("xxBiff") InMyArea("xxBiff")!StateCheck("xxBiff",CD_STATE_NOTVALID)
+== xxBiffJ IF ~InParty("xxBiff") InMyArea("xxBiff") !StateCheck("xxBiff",CD_STATE_NOTVALID)
 !Global("xxBiff_sod_romanceactive","global",2)~ THEN ~So sorry, but it's my time to leave you.~
 END
 >>>>>>>>
@@ -51,7 +53,7 @@ END
 COMPILE EVALUATE_BUFFER ~.../add_xxbiff_afh_romance_transaction.d~ 
 
 /* If the active romancing NPC wasn't in party at the end (for whatever reason) they'll visit the PC in their chambers */
-/* insert script block into the script aftr Corwin's */
+/* insert script block into the script after Corwin's */
 /* Note: done like this, the addition enables other romances to play their final romance dialgue, too - all mod romances and one original game romance in case a multi romance tweak is used. */
 
 COPY_EXISTING ~c#afh3.BCS~ ~override~
@@ -76,7 +78,7 @@ THEN
 		MoveGlobal("c#afh3","xxBiff",[596.220]) 
 		ActionOverride("xxBiff",SetDialog("xxBiffsP")) 
 		ActionOverride("xxBiff",ChangeAIScript("c#afhvis",OVERRIDE))
-/* no END here that is wanted behavior */~ 
+/* no END here; this is wanted behavior */~ 
 			PATCH_PRINT ~Patching: %num_matches% matches found in %SOURCE_FILESPEC% for REPLACE_TEXTUALLY: %textToReplace%~
 		END ELSE BEGIN
 			PATCH_WARN ~WARNING: could not find %textToReplace% in %SOURCE_FILESPEC%~
