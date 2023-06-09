@@ -110,6 +110,9 @@ Pocket Plane Group			http://pocketplane.net
 Spellhold Studios			http://www.shsforums.net/
 Kerzenburgforum (German)		https://www.baldurs-gate.de/index.php
 
+Further Links:
+DLC Merger				https://forums.beamdog.com/discussion/71305/mod-dlc-merger-merge-steam-gog-sod-dlc-or-custom-dlcs-with-the-main-game/p1
+
 
 LEGAL INFORMATION
 
@@ -121,6 +124,9 @@ This mod is not developed, supported, or endorsed by BioWare, Black Isle Studios
 
 
 HISTORY
+
+Version 8
+-Added check for and link to DLC Merger.
 
 Version 7
 -Optimized script and dialogue templates for using Road to Discovery's trigger variable system for reactions to the main story elements.

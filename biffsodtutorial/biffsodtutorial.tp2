@@ -12,7 +12,7 @@ BACKUP ~Biffsodtutorial/backup~ //put the mod folder name here, for the rest of 
 
 AUTHOR ~https://www.gibberlings3.net/forums/topic/30139-jasteys-sod-npc-modding-tutorials/~ //The info given here will be shown if the install fails with the note to send the DEBUG here for helfile p. Put here wherever you want the player to seek your help in case the installation fails. I used to give my email address but switched to giving a forum link as it has several advantages.
 
-VERSION ~7~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
+VERSION ~8~ //version number. Always give a specific version number to any mod version you make public, or debugging a player's install will be difficult.
 
 README ~%MOD_FOLDER%/readme.Biff.%LANGUAGE%.txt~ //The file specified here will be called after the language call, but before the installation of the mod. Can also be html.
 
@@ -22,7 +22,12 @@ Please note: text files for the EE need to be in utf8 without BOM. However, in t
 LANGUAGE, WITH_TRA, USING and AUTO_TRA
 with the last one overwriting the first, meaning: you can overwrite strings called by LANGUAGE with WITH_TRA, both will be overwritten by USING, but if there is a tra file of the same name of the file you are compiling in the AUTO_TRA folder, the strings with matching numbers from there will be taken with highest priority. */
 
-ALWAYS //put stuff that should be done by every install of every component here. 
+ALWAYS //put stuff that should be done by every install of every component here.
+
+/* This checks whether SoD from GOG or Steam is ready to be modded! */
+ ACTION_IF ((FILE_EXISTS ~dlc/sod-dlc.zip~) OR (FILE_EXISTS ~sod-dlc.zip~)) THEN BEGIN
+  FAIL ~Your SoD game needs to be modmerged before mods can be installed on this game. Check the readme for a link to download the DLC Merger.~
+ END 
 
 /* this is needed if ingame text ressources need to be patched e.g. inside a script so the text matches 100%: needed for exact match in REPLACE_TEXTUALLY */
   INCLUDE ~%MOD_FOLDER%/lib/extra_regexp_vars.tph~
