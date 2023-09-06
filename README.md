@@ -15,6 +15,9 @@ https://gibberlings3.github.io/modding-resources/Tutorial_NPCMoveCampsSoD.html
 Modding Tutorial Part 2: Make Your NPC Comment and Move Along at the End of SoD:
 https://gibberlings3.github.io/modding-resources/Tutorial_NPC_SoDGameEnd.html
 
+Modding Tutorial Part 3: Add Other General SoD Behavior to Your NPC: XP Adjustment, Actions in Story Cutscenes, Commenting of Main Story Events: 
+https://gibberlings3.github.io/modding-resources/Tutorial_SoDGeneralNPCThings.html
+
 Modding Tutorial Part 4: How to Script the SoD Banter System for Your NPC:
 https://gibberlings3.github.io/modding-resources/Tutorial_SoDBanterSystem.html
 
